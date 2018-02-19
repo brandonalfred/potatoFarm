@@ -1,4 +1,4 @@
-package com.kasten.chess;
+package com.kasten.chess.players;
 
 public class Player {
     private String playerType;

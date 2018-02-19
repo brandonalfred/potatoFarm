@@ -1,8 +1,8 @@
-package com.kasten.chess;
+package com.kasten.chess.views;
+
+import com.kasten.chess.containers.GUI;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MenuWindow extends JFrame {
     private GUI myGUI;
@@ -39,12 +39,12 @@ public class MenuWindow extends JFrame {
     private void handleOptionsPress() {
         System.out.println("Options Pressed.");
         this.setVisible(false);
-        myGUI.switchView("options");
+        myGUI.updateView("options");
     }
 
     private void handleStartPress() {
         System.out.println("Start Pressed.");
         this.setVisible(false);
-        //myGUI.switchView("board");
+        myGUI.updateView("board");
     }
 }

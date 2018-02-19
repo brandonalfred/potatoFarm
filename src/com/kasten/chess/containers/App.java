@@ -1,4 +1,6 @@
-package com.kasten.chess;
+package com.kasten.chess.containers;
+
+import com.kasten.chess.model.AppState;
 
 import java.util.Observable;
 
@@ -14,5 +16,10 @@ public class App extends Observable {
         notifyObservers(state);
     }
 
+    public void updateView(String newView) {
+        state.setView(newView);
+        setChanged();
+        notifyObservers(state);
 
+    }
 }

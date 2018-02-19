@@ -1,4 +1,4 @@
-package com.kasten.chess;
+package com.kasten.chess.model;
 
 public class AppState {
     private String view;

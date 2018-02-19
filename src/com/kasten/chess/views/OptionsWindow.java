@@ -1,4 +1,6 @@
-package com.kasten.chess;
+package com.kasten.chess.views;
+
+import com.kasten.chess.containers.GUI;
 
 import javax.swing.*;
 
@@ -8,6 +10,7 @@ public class OptionsWindow extends JFrame {
     private JButton applyButton;
 
     public OptionsWindow(GUI container) {
+        // SOMEHOW LOAD THE APP STATE TO SHOW THE CURRENT SELECTED OPTIONS
         myGUI = container;
 
         /* Window Size/Position settings */
@@ -87,12 +90,13 @@ public class OptionsWindow extends JFrame {
     private void handleCancelPress() {
         System.out.println("Cancel Pressed.");
         this.setVisible(false);
-        myGUI.switchView("main");
+        myGUI.updateView("main");
     }
 
     private void handleApplyPress() {
         System.out.println("Apply Pressed.");
+        // APPLY NEW OPTIONS TO APP STATE
         this.setVisible(false);
-        myGUI.switchView("main");
+        myGUI.updateView("main");
     }
 }

@@ -1,4 +1,6 @@
-package com.kasten.chess;
+package com.kasten.chess.containers;
+
+import com.kasten.chess.containers.App;
 
 public class Main {
 
