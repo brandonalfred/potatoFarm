@@ -1,9 +1,10 @@
 package com.kasten.chess.containers;
 
-import com.kasten.chess.model.AppState;
+import com.kasten.chess.model.App;
 import com.kasten.chess.views.MenuWindow;
 import com.kasten.chess.views.OptionsWindow;
 
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,30 +15,36 @@ public class GUI implements Observer {
     private OptionsWindow optionsMenu;
     //private BoardWindow boardWindow;
 
-    @Override
-    public void update(Observable o, Object arg) {
-        AppState state = ( AppState ) arg;
-        String newView = state.getView();
-        System.out.println("new view: " + newView);
-        if (!newView.equals(currentView)) switchView(newView);
-    }
-
     public GUI (App app) {
         myApp = app;
         currentView = "";
     }
 
-    public void switchView(String newView) {
-        switch (newView) {
-            case "options":
-                optionsMenu = new OptionsWindow(this);
-                break;
-            case "main":
-                mainMenu = new MenuWindow(this);
-                break;
+    @Override
+    public void update(Observable o, Object arg) {
+        HashMap<String, String> state = ( HashMap ) arg;
+        String newView = state.get("view");
+
+        if (!newView.equals(currentView)) {
+            System.out.println("new view: " + newView); // FOR DEBUGGING
+            if (newView.equals("options")) optionsMenu = new OptionsWindow(this);
+            if (newView.equals("main")) mainMenu = new MenuWindow(this);
+            if (newView.equals("board")) System.out.println("BOARD STUB - ");
         }
     }
-    public void updateView(String newView) {
-        this.myApp.updateView(newView);
+
+    public void setView(String newView) {
+        HashMap<String, String> newState = getState();
+        newState.put("view", newView);
+        myApp.setState(newState);
+    }
+
+    public void setOptions(HashMap<String, String> selectedOptions) {
+        System.out.println("setting " + selectedOptions.get("theme"));
+        myApp.setState(selectedOptions);
+    }
+
+    public HashMap<String, String> getState() {
+        return myApp.getState();
     }
 }

@@ -1,6 +1,6 @@
 package com.kasten.chess.containers;
 
-import com.kasten.chess.containers.App;
+import com.kasten.chess.model.App;
 
 public class Main {
 
