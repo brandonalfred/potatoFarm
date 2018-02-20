@@ -17,12 +17,27 @@ public class OptionsWindow extends Window {
         super(container, state);
         setTitle("Game Options");
 
-        String theme = state.get("theme");
-        String opponent = state.get("opponent");
-        String difficulty = state.get("difficulty");
-
         /* Options Buttons */
+        displayOptions();
 
+        /* 'Apply' and 'Cancel' Buttons */
+        cancelButton = new JButton("Cancel");
+        cancelButton.setBounds(LEFT_BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        cancelButton.addActionListener(this);
+        applyButtonTheme(cancelButton);
+        add(cancelButton);
+        applyButton = new JButton("Apply");
+        applyButton.setBounds(RIGHT_BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        applyButton.addActionListener(this);
+        applyButtonTheme(applyButton);
+        add(applyButton);
+        getRootPane().setDefaultButton(applyButton);
+        applyButton.requestFocus();
+
+        setVisible(true);
+    }
+
+    private void displayOptions() {
         /* Day/Night Mode */
         JLabel themeHeading = new JLabel("Display Theme:");
         themeHeading.setBounds(20, 20, 200, 30);
@@ -35,7 +50,7 @@ public class OptionsWindow extends Window {
         nightRadio.setBounds(50, 75, 150, 20);
         nightRadio.setForeground(textColor);
         nightRadio.setActionCommand("night");
-        if (theme.equals("day")) dayRadio.setSelected(true);
+        if (state.get("theme").equals("day")) dayRadio.setSelected(true);
         else nightRadio.setSelected(true);
         themeGroup = new ButtonGroup();
         themeGroup.add(dayRadio);
@@ -56,7 +71,7 @@ public class OptionsWindow extends Window {
         robotRadio.setBounds(50, 175, 150, 20);
         robotRadio.setForeground(textColor);
         robotRadio.setActionCommand("robot");
-        if (opponent.equals("human")) humanRadio.setSelected(true);
+        if (state.get("opponent").equals("human")) humanRadio.setSelected(true);
         else robotRadio.setSelected(true);
         opponentGroup = new ButtonGroup();
         opponentGroup.add(humanRadio);
@@ -81,8 +96,8 @@ public class OptionsWindow extends Window {
         hardRadio.setBounds(50, 300, 150, 20);
         hardRadio.setForeground(textColor);
         hardRadio.setActionCommand("hard");
-        if (difficulty.equals("easy")) easyRadio.setSelected(true);
-        else if (difficulty.equals("normal")) normalRadio.setSelected(true);
+        if (state.get("difficulty").equals("easy")) easyRadio.setSelected(true);
+        else if (state.get("difficulty").equals("normal")) normalRadio.setSelected(true);
         else hardRadio.setSelected(true);
         difficultyGroup = new ButtonGroup();
         difficultyGroup.add(easyRadio);
@@ -92,21 +107,6 @@ public class OptionsWindow extends Window {
         add(easyRadio);
         add(normalRadio);
         add(hardRadio);
-
-        /* 'Apply' and 'Cancel' Buttons */
-        cancelButton = new JButton("Cancel");
-        cancelButton.setBounds(20, 380, 100, 40);
-        cancelButton.addActionListener(this);
-        applyButtonTheme(cancelButton);
-        add(cancelButton);
-        applyButton = new JButton("Apply");
-        applyButton.setBounds(280, 380, 100, 40);
-        applyButton.addActionListener(this);
-        applyButtonTheme(applyButton);
-        add(applyButton);
-        getRootPane().setDefaultButton(applyButton);
-        applyButton.requestFocus();
-        setVisible(true);
     }
 
     private void setSelectedOptions() {

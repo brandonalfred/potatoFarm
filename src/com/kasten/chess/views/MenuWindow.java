@@ -5,12 +5,8 @@ import com.kasten.chess.containers.GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.HashMap;
-
-import static java.awt.Color.*;
-
-// should we make a window interface?? idk if its worth it for only two...
 
 public class MenuWindow extends Window {
     private JButton startButton;
@@ -29,12 +25,12 @@ public class MenuWindow extends Window {
 
         /* 'Start' and 'Options' Buttons */
         optionsButton = new JButton("Options");
-        optionsButton.setBounds(20, 380, 100, 40);
+        optionsButton.setBounds(LEFT_BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         optionsButton.addActionListener(this);
         applyButtonTheme(optionsButton);
         add(optionsButton);
         startButton = new JButton("Start");
-        startButton.setBounds(280, 380, 100, 40);
+        startButton.setBounds(RIGHT_BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         startButton.addActionListener(this);
         applyButtonTheme(startButton);
         add(startButton);
