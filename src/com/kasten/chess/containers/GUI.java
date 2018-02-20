@@ -1,6 +1,5 @@
 package com.kasten.chess.containers;
 
-import com.kasten.chess.model.App;
 import com.kasten.chess.views.MenuWindow;
 import com.kasten.chess.views.OptionsWindow;
 
@@ -27,8 +26,8 @@ public class GUI implements Observer {
 
         if (!newView.equals(currentView)) {
             System.out.println("new view: " + newView); // FOR DEBUGGING
-            if (newView.equals("options")) optionsMenu = new OptionsWindow(this);
-            if (newView.equals("main")) mainMenu = new MenuWindow(this);
+            if (newView.equals("options")) optionsMenu = new OptionsWindow(this, state);
+            if (newView.equals("main")) mainMenu = new MenuWindow(this, state);
             if (newView.equals("board")) System.out.println("BOARD STUB - ");
         }
     }

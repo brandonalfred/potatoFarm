@@ -1,6 +1,7 @@
 package com.kasten.chess.views;
 
 import com.kasten.chess.containers.GUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,27 +12,20 @@ import static java.awt.Color.*;
 
 // should we make a window interface?? idk if its worth it for only two...
 
-public class MenuWindow extends JFrame implements ActionListener {
-    private GUI myGUI;
+public class MenuWindow extends Window {
     private JButton startButton;
     private JButton optionsButton;
-    private Color bgColor;
-    private Color textColor;
 
-    public MenuWindow(GUI container) {
-        myGUI = container;
-        HashMap<String, String> options = myGUI.getState();
-        String theme = options.get("theme");
-        System.out.println("loading with " + theme);
-        applyTheme(theme);
-        getContentPane().setBackground(bgColor);
-        getContentPane().setForeground(textColor);
+    public MenuWindow(GUI container, HashMap<String, String> state) {
+        super(container, state);
+        setTitle("Griffin Chess");
 
-        /* Window Format/Size/Position settings */
-        setTitle("Waterfall Chess");
-        setSize(400, 500);
-        setLocation(450, 100);
-        applyTheme(theme);
+        /* Title */
+        JLabel title = new JLabel("Griffin Chess");
+        title.setFont(new Font("Courier", Font.BOLD, 32));
+        title.setBounds(70,80,250,100);
+        title.setForeground(textColor);
+        add(title);
 
         /* 'Start' and 'Options' Buttons */
         optionsButton = new JButton("Options");
@@ -46,30 +40,7 @@ public class MenuWindow extends JFrame implements ActionListener {
         add(startButton);
         getRootPane().setDefaultButton(startButton);
         startButton.requestFocus();
-
-        /* Layout/Visibility Window Options */
-        setLayout(null);
-        setResizable(false);
         setVisible(true);
-    }
-
-    private void applyButtonTheme(JButton button) {
-        if (bgColor == darkGray) {
-            button.setBackground(bgColor);
-            button.setForeground(textColor);
-            button.setOpaque(true);
-            button.setBorderPainted(false);
-        }
-    }
-
-    private void applyTheme(String theme) {
-        if (theme.equals("night")) {
-            bgColor = darkGray;
-            textColor = lightGray;
-        } else {
-            bgColor = lightGray;
-            textColor = black;
-        }
     }
 
     public void actionPerformed(ActionEvent e) {

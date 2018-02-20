@@ -1,4 +1,4 @@
-package com.kasten.chess.model;
+package com.kasten.chess.containers;
 
 import com.kasten.chess.containers.GUI;
 

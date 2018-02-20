@@ -3,39 +3,23 @@ package com.kasten.chess.views;
 import com.kasten.chess.containers.GUI;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import static java.awt.Color.*;
-
-public class OptionsWindow extends JFrame implements ActionListener {
-    private GUI myGUI;
-    private HashMap<String, String> selectedOptions;
+public class OptionsWindow extends Window {
     private ButtonGroup themeGroup;
     private ButtonGroup opponentGroup;
     private ButtonGroup difficultyGroup;
     private JButton cancelButton;
     private JButton applyButton;
-    private Color bgColor;
-    private Color textColor;
 
-
-    public OptionsWindow(GUI container) {
-        myGUI = container;
-        selectedOptions = myGUI.getState();
-        String theme = selectedOptions.get("theme");
-        String opponent = selectedOptions.get("opponent");
-        String difficulty = selectedOptions.get("difficulty");
-
-        /* Window Format/Size/Position settings */
+    public OptionsWindow(GUI container, HashMap<String, String> state) {
+        super(container, state);
         setTitle("Game Options");
-        setSize(400, 500);
-        setLocation(450, 100);
-        System.out.println("loading with " + theme);
-        applyTheme(theme);
-        getContentPane().setBackground(bgColor);
+
+        String theme = state.get("theme");
+        String opponent = state.get("opponent");
+        String difficulty = state.get("difficulty");
 
         /* Options Buttons */
 
@@ -122,38 +106,15 @@ public class OptionsWindow extends JFrame implements ActionListener {
         add(applyButton);
         getRootPane().setDefaultButton(applyButton);
         applyButton.requestFocus();
-
-        /* Layout/Visibility Window Options */
-        setLayout(null);
-        setResizable(false);
         setVisible(true);
     }
 
-    private void applyButtonTheme(JButton button) {
-        if (bgColor == darkGray) {
-            button.setBackground(bgColor);
-            button.setForeground(textColor);
-            button.setOpaque(true);
-            button.setBorderPainted(false);
-        }
-    }
-
-    private void applyTheme(String theme) {
-        if (theme.equals("night")) {
-            bgColor = darkGray;
-            textColor = lightGray;
-        } else {
-            bgColor = lightGray;
-            textColor = black;
-        }
-    }
-
     private void setSelectedOptions() {
-        selectedOptions.put("theme", themeGroup.getSelection().getActionCommand());
-        selectedOptions.put("opponent", opponentGroup.getSelection().getActionCommand());
-        selectedOptions.put("difficulty", difficultyGroup.getSelection().getActionCommand());
-        selectedOptions.put("view", "main");
-        myGUI.setOptions(selectedOptions);
+        state.put("theme", themeGroup.getSelection().getActionCommand());
+        state.put("opponent", opponentGroup.getSelection().getActionCommand());
+        state.put("difficulty", difficultyGroup.getSelection().getActionCommand());
+        state.put("view", "main");
+        myGUI.setOptions(state);
     }
 
     /* Button Handler */
