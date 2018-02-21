@@ -1,5 +1,6 @@
 package com.kasten.chess.containers;
 
+import com.kasten.chess.pieces.Piece;
 import com.kasten.chess.views.BoardWindow;
 import com.kasten.chess.views.MenuWindow;
 import com.kasten.chess.views.OptionsWindow;
@@ -25,7 +26,7 @@ public class GUI implements Observer {
     public void update(Observable o, Object arg) {
         HashMap<String, String> state = ( HashMap ) arg;
         String newView = state.get("view");
-        ArrayList<ArrayList<String>> boardState = myApp.getBoard();
+        ArrayList<ArrayList<Piece>> boardState = myApp.getBoardState();
 
         if (!newView.equals(currentView)) {
             System.out.println("new view: " + newView); // FOR DEBUGGING
@@ -48,9 +49,5 @@ public class GUI implements Observer {
 
     public HashMap<String, String> getOptions() {
         return myApp.getOptions();
-    }
-
-    public ArrayList<ArrayList<String>> getBoard() {
-        return myApp.getBoard();
     }
 }

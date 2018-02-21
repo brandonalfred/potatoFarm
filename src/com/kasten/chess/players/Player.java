@@ -3,9 +3,13 @@ package com.kasten.chess.players;
 // we should make Player an interface
 // then have a human and a robot class that implement the interface
 
-import java.util.List;
+import com.kasten.chess.pieces.Piece;
+
+import java.util.ArrayList;
 
 public interface Player {
     String getType();
-    List getMove();
+    ArrayList<Piece> getPieces();
+    boolean isActive();
+    ArrayList<Piece> generateNewPieces();
 }

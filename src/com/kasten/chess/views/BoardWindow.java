@@ -1,6 +1,7 @@
 package com.kasten.chess.views;
 
 import com.kasten.chess.containers.GUI;
+import com.kasten.chess.pieces.Piece;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,15 +12,17 @@ import java.util.HashMap;
 import static java.awt.Color.*;
 
 public class BoardWindow extends Window {
-    private ArrayList<ArrayList<String>> boardState;
+    private ArrayList<ArrayList<Piece>> boardState;
     private Color darkColor;
     private Color lightColor;
     private JButton takeTurnButton;
     private JButton quitButton;
+    // there should be a Board object here
 
-    public BoardWindow(GUI container, HashMap<String, String> state, ArrayList<ArrayList<String>> boardState) {
+    public BoardWindow(GUI container, HashMap<String, String> state, ArrayList<ArrayList<Piece>> boardState) {
         super(container, state);
         setTitle("Griffin Chess");
+        // instead of setting the boardState here, we'll pass boardState to the Board constructor
         this.boardState = boardState;
         applyBoardTheme();
         constructBoard();
@@ -45,6 +48,7 @@ public class BoardWindow extends Window {
         }
 
     private void constructBoard() {
+        // THIS METHOD SHOULD EVENTUALLY GO IN THE BOARD CLASS
         GridLayout gridLayout = new GridLayout(8,8);
         JPanel board = new JPanel(gridLayout);
         int boardMargin = 20;
@@ -61,14 +65,14 @@ public class BoardWindow extends Window {
                 if (row % 2 == 0 && col % 2 == 0) cell.setBackground(darkColor);
                 else if (row % 2 == 1 && col % 2 == 1) cell.setBackground(darkColor);
                 else cell.setBackground(lightColor);
-
+/*
                 // adding text for now to represent board state for each square
                 if (boardState.get(row).get(col).equals("-")) {
                     JLabel label = new JLabel("-");
                     label.setForeground(WHITE);
                     cell.add(label);
                 }
-
+*/
                 board.add(cell);
             }
         }
