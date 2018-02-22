@@ -53,4 +53,10 @@ public class GUI implements Observer {
     public HashMap<String, String> getOptions() {
         return myApp.getOptions();
     }
+
+    public void setSelected(String selected) {
+        HashMap<String, String> newState = getOptions();
+        newState.put("selectedCell", selected);
+        myApp.setOptions(newState);
+    }
 }

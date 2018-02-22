@@ -8,10 +8,13 @@ import com.kasten.chess.players.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.sun.glass.ui.Cursor.setVisible;
 import static java.awt.Color.*;
 
 public class BoardWindow extends Window {
@@ -19,6 +22,7 @@ public class BoardWindow extends Window {
     private JPanel boardUI;
     private Color darkColor;
     private Color lightColor;
+    private Color selectedColor;
     private JButton takeTurnButton;
     private JButton quitButton;
     // there should be a Board object here
@@ -52,38 +56,38 @@ public class BoardWindow extends Window {
         }
 
     private void constructBoard() {
-        // THIS METHOD SHOULD EVENTUALLY GO IN THE BOARD CLASS
+        // THIS METHOD SHOULD EVENTUALLY GO IN THE BOARD CLASS ?? should it ??
         GridLayout gridLayout = new GridLayout(8,8);
         boardUI = new JPanel(gridLayout);
         int boardMargin = 20;
         int boardSize = 360;
+        boardUI.setBounds(boardMargin,boardMargin, boardSize, boardSize);
         darkColor = BLACK;
         lightColor = RED;
+        selectedColor = GREEN;
         applyBoardTheme();
-        boardUI.setBounds(boardMargin,boardMargin, boardSize, boardSize);
         add(boardUI);
+
+        // debugging this
+        int selectedRow = Integer.parseInt(state.get("selectedCell").substring(0,1));
+        int selectedCol = Integer.parseInt(state.get("selectedCell").substring(1));
+        System.out.printf("selected cell is %d, %d\n", selectedRow, selectedCol);
+
         for (int row=0;row < 8; row++) {
             for (int col=0; col < 8; col++) {
-                JPanel cell = new JPanel();
+                JButton cell = new JButton();
                 cell.setSize(40, 40);
                 if (row % 2 == 0 && col % 2 == 0) cell.setBackground(darkColor);
                 else if (row % 2 == 1 && col % 2 == 1) cell.setBackground(darkColor);
                 else cell.setBackground(lightColor);
-/*
-                for (Player player : board.getPlayers())
-                    for (Piece piece : player.getPieces())
-                        if (piece.getRow() == row && piece.getColumn() == col)
-                            if (piece.isAlive()) {
-                                JLabel label = new JLabel(piece.getType());
-                                label.setForeground(WHITE);
-                                cell.add(label);
-                            }
-*/
+                cell.setOpaque(true);
+                cell.setBorderPainted(false);
 
-
-                // instead of looping over each cell... we should just loop through each players pieces
-                // using the piece location to place it on the gui board
-                // there doesn't really need to be a board-like representation on the back end...
+                if (row == selectedRow && col == selectedCol) cell.setBackground(selectedColor);
+                // woah
+                String coords = new Integer(row).toString() + new Integer(col).toString();
+                cell.setActionCommand(coords);
+                // woah
 
 
                 // adding text for now to represent board state for each square
@@ -93,6 +97,7 @@ public class BoardWindow extends Window {
                     cell.add(label);
                 }
 
+                cell.addActionListener(this);
                 boardUI.add(cell);
             }
         }
@@ -100,13 +105,17 @@ public class BoardWindow extends Window {
 
     public void actionPerformed(ActionEvent e) {
         String buttonType = e.getActionCommand();
-        setVisible(false);
+        //setVisible(false);
         switch (buttonType) {
             case "Quit":
+                setVisible(false);
                 myGUI.setView("main");
                 break;
             case "Confirm":
                 System.out.println("Taking Turn...");
+            default:
+                System.out.println(buttonType);
+                myGUI.setSelected(buttonType);
         }
     }
 }
