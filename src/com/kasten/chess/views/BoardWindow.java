@@ -65,7 +65,12 @@ public class BoardWindow extends Window {
                 if (row % 2 == 0 && col % 2 == 0) cell.setBackground(darkColor);
                 else if (row % 2 == 1 && col % 2 == 1) cell.setBackground(darkColor);
                 else cell.setBackground(lightColor);
-/*
+
+                // instead of looping over each cell... we should just loop through each players pieces
+                // using the piece location to place it on the gui board
+                // there doesn't really need to be a board-like representation on the back end...
+
+                /*
                 // adding text for now to represent board state for each square
                 if (boardState.get(row).get(col).equals("-")) {
                     JLabel label = new JLabel("-");

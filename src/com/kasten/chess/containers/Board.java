@@ -41,6 +41,9 @@ public class Board {
         int column = newPiece.getColumn();
 
         board.get(row).add(column, newPiece);
+        // do we really need a board? if both players keep track of their pieces..
+        // and pieces themselves keep track of their location..
+        // this might only need to exist in the BoardWindow
     }
 
     public ArrayList<ArrayList<Piece>> getBoardState() {

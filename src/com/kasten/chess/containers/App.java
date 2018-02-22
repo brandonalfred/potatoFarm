@@ -25,6 +25,7 @@ public class App extends Observable {
         options.put("opponent", "robot");
         options.put("difficulty", "normal");
         options.put("activePlayer", "one");
+        options.put("losingPlayer", "");
         // we can add anything we want the app to keep track of here...
         // any contextual stuff, like castling, would be kept track of like this
         setChanged();
