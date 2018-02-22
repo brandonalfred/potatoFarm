@@ -42,7 +42,11 @@ public class App extends Observable {
         return options;
     }
 
-    public ArrayList<ArrayList<Piece>> getBoardState() {
+    public ArrayList<ArrayList<String>> getBoardState() {
         return board.getBoardState();
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

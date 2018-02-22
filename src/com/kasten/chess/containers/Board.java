@@ -15,39 +15,46 @@ import com.kasten.chess.players.Player;
 import java.util.ArrayList;
 
 public class Board {
-    private ArrayList<ArrayList<Piece>> board;
+    private ArrayList<ArrayList<String>> board;
     private ArrayList<Player> players;
 
     public Board() {
-        board = generateBlankBoard();
         players = new ArrayList<>();
         players.add(new Human(1)); // <- this is the method that should add pieces
+        board = generateBlankBoard();
+        addPieces();
     }
 
-    private ArrayList<ArrayList<Piece>> generateBlankBoard() {
+    private ArrayList<ArrayList<String>> generateBlankBoard() {
         board = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
             board.add(new ArrayList<>());
             for (int col = 0; col < 8; col++) {
-                // board.get(row).add("-");
+                board.get(row).add("-");
+                // for now... `-` indicates a blank space
                 // this isn't finished at all yet.. still in debugging stage
             }
         }
         return board;
     }
 
-    public void addPiece(Piece newPiece) {
-        int row = newPiece.getRow();
-        int column = newPiece.getColumn();
+    public void addPieces() {
+        for (Player player : players) {
+            System.out.printf("players in game - %s\n", player.getType());
+            for (Piece piece : player.getPieces()) {
+                board.get(piece.getRow()).set(piece.getColumn(), piece.getType());
+                System.out.printf("piece at %d, %d\n", piece.getRow(), piece.getColumn());
+            }
+        }
 
-        board.get(row).add(column, newPiece);
-        // do we really need a board? if both players keep track of their pieces..
-        // and pieces themselves keep track of their location..
-        // this might only need to exist in the BoardWindow
     }
 
-    public ArrayList<ArrayList<Piece>> getBoardState() {
+    public ArrayList<ArrayList<String>> getBoardState() {
         return board;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     public void debugBoardOutput() {

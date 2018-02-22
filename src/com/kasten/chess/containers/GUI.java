@@ -26,13 +26,16 @@ public class GUI implements Observer {
     public void update(Observable o, Object arg) {
         HashMap<String, String> state = ( HashMap ) arg;
         String newView = state.get("view");
-        ArrayList<ArrayList<Piece>> boardState = myApp.getBoardState();
+        ArrayList<ArrayList<String>> boardState =  myApp.getBoardState();
 
         if (!newView.equals(currentView)) {
             System.out.println("new view: " + newView); // FOR DEBUGGING
             if (newView.equals("options")) optionsMenu = new OptionsWindow(this, state);
             if (newView.equals("main")) mainMenu = new MenuWindow(this, state);
-            if (newView.equals("board")) gameScreen = new BoardWindow(this, state, boardState);
+            if (newView.equals("board")) {
+                Board newBoard = myApp.getBoard();
+                gameScreen = new BoardWindow(this, state, boardState);
+            }
         }
     }
 

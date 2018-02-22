@@ -21,7 +21,7 @@ public class Human implements Player {
 
     @Override
     public ArrayList<Piece> getPieces() {
-        return null;
+        return pieces;
     }
 
     @Override
