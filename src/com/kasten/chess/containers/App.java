@@ -1,21 +1,18 @@
 package com.kasten.chess.containers;
 
-import com.kasten.chess.pieces.Piece;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 
-public class App extends Observable {
+public class App {
     private HashMap<String, String> options;
-    private Board board; // this will get moved to Board class
-    private GUI view;
+    private Board myBoard;
+    private GUI myGUI;
 
     public App() {
         options = new HashMap<>();
-        board = new Board();
-        view = new GUI(this);
-        addObserver(view);
+        myBoard = new Board();
+        myGUI = new GUI(this);
         setInitialOptions();
     }
 
@@ -27,16 +24,12 @@ public class App extends Observable {
         options.put("activePlayer", "one");
         options.put("selectedCell", "99");
 
-        // we can add anything we want the app to keep track of here...
-        // any contextual stuff, like castling, would be kept track of like this
-        setChanged();
-        notifyObservers(options);
+        myGUI.updateState(options);
     }
 
     public void setOptions(HashMap<String, String> newState) {
         options = newState;
-        setChanged();
-        notifyObservers(options);
+        myGUI.updateState(options);
     }
 
     public HashMap<String, String> getOptions() {
@@ -44,10 +37,14 @@ public class App extends Observable {
     }
 
     public ArrayList<ArrayList<String>> getBoardState() {
-        return board.getBoardState();
+        return myBoard.getBoard();
     }
 
     public Board getBoard() {
-        return board;
+        return myBoard;
+    }
+
+    public void setSelected(String selected) {
+        myBoard.setSelected(selected);
     }
 }

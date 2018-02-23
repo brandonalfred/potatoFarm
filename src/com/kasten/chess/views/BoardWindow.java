@@ -13,11 +13,13 @@ import java.awt.event.MouseListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import static com.sun.glass.ui.Cursor.setVisible;
 import static java.awt.Color.*;
 
-public class BoardWindow extends Window {
+public class BoardWindow extends Window implements Observer {
     private ArrayList<ArrayList<String>> boardState;
     private JPanel boardUI;
     private Color darkColor;
@@ -30,7 +32,6 @@ public class BoardWindow extends Window {
     public BoardWindow(GUI container, HashMap<String, String> state, ArrayList<ArrayList<String>> boardState) {
         super(container, state);
         setTitle("Griffin Chess");
-        //this.boardState = boardState;
         this.boardState = boardState;
         applyBoardTheme();
         constructBoard();
@@ -117,5 +118,12 @@ public class BoardWindow extends Window {
                 System.out.println(buttonType);
                 myGUI.setSelected(buttonType);
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        boardState = (ArrayList<ArrayList<String>>) arg;
+        Board myBoard = ( Board ) o;
+        constructBoard();
     }
 }

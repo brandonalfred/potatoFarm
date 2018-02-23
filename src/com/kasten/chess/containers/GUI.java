@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class GUI implements Observer {
+public class GUI {
     private App myApp;
     private String currentView;
     private MenuWindow mainMenu;
@@ -22,19 +22,17 @@ public class GUI implements Observer {
         currentView = "";
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        HashMap<String, String> state = ( HashMap ) arg;
-        String newView = state.get("view");
+    public void updateState(HashMap<String, String> newState) {
+        String newView = newState.get("view");
         ArrayList<ArrayList<String>> boardState =  myApp.getBoardState();
 
         if (!newView.equals(currentView)) {
             System.out.println("new view: " + newView); // FOR DEBUGGING
-            if (newView.equals("options")) optionsMenu = new OptionsWindow(this, state);
-            if (newView.equals("main")) mainMenu = new MenuWindow(this, state);
+            if (newView.equals("options")) optionsMenu = new OptionsWindow(this, newState);
+            if (newView.equals("main")) mainMenu = new MenuWindow(this, newState);
             if (newView.equals("board")) {
                 Board newBoard = myApp.getBoard();
-                gameScreen = new BoardWindow(this, state, boardState);
+                gameScreen = new BoardWindow(this, newState, boardState);
             }
         }
     }
@@ -55,8 +53,9 @@ public class GUI implements Observer {
     }
 
     public void setSelected(String selected) {
-        HashMap<String, String> newState = getOptions();
-        newState.put("selectedCell", selected);
-        myApp.setOptions(newState);
+        //HashMap<String, String> newState = getOptions();
+        //newState.put("selectedCell", selected);
+        //myApp.setOptions(newState);
+        myApp.setSelected(selected);
     }
 }

@@ -13,15 +13,20 @@ import com.kasten.chess.players.Human;
 import com.kasten.chess.players.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Observable;
 
-public class Board {
+public class Board extends Observable {
+    private HashMap<String, String> gameState;
     private ArrayList<ArrayList<String>> board;
     private ArrayList<Player> players;
 
     public Board() {
+        gameState = new HashMap<>();
         players = new ArrayList<>();
         players.add(new Human(1)); // <- this is the method that should add pieces
         board = generateBlankBoard();
+        setInitialGameState();
         addPieces();
     }
 
@@ -38,6 +43,11 @@ public class Board {
         return board;
     }
 
+    public void setInitialGameState() {
+        gameState.put("activePlayer", "one");
+        gameState.put("selectedCell", "99");
+    }
+
     public void addPieces() {
         for (Player player : players) {
             System.out.printf("players in game - %s\n", player.getType());
@@ -49,7 +59,7 @@ public class Board {
 
     }
 
-    public ArrayList<ArrayList<String>> getBoardState() {
+    public ArrayList<ArrayList<String>> getBoard() {
         return board;
     }
 
@@ -59,6 +69,12 @@ public class Board {
 
     public void debugBoardOutput() {
         // print out some debug stuff
+    }
+
+    public void setSelected(String selected) {
+        gameState.put("selectedCell", selected);
+        setChanged();
+        notifyObservers(gameState);
     }
     // add a startGame() method that calls both players.generatePieces() method?
 
