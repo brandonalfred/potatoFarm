@@ -1,6 +1,7 @@
 package com.kasten.chess.views;
 
 import com.kasten.chess.containers.Board;
+import com.kasten.chess.containers.Cell;
 import com.kasten.chess.containers.GUI;
 import com.kasten.chess.pieces.Piece;
 import com.kasten.chess.players.Player;
@@ -22,6 +23,7 @@ import static java.awt.Color.*;
 public class BoardWindow extends Window implements Observer {
     private HashMap<String, String> gameState;
     private ArrayList<ArrayList<String>> boardState;
+    private ArrayList<ArrayList<Cell>> boardUICells;
     private JPanel boardUI;
     private Color darkColor;
     private Color lightColor;
@@ -37,6 +39,7 @@ public class BoardWindow extends Window implements Observer {
         //boardState = generateBlankBoard();
         applyBoardTheme();
         //displayBoard();
+        boardUICells = generateBlankBoard();
 
         /* 'Quit' and 'Take Turn' Buttons */
         quitButton = new JButton("Quit");
@@ -58,17 +61,17 @@ public class BoardWindow extends Window implements Observer {
             lightColor = GRAY;
         }
 
-    private ArrayList<ArrayList<String>> generateBlankBoard() {
-        boardState = new ArrayList<>();
+    private ArrayList<ArrayList<Cell>> generateBlankBoard() {
+        boardUICells = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
-            boardState.add(new ArrayList<>());
+            boardUICells.add(new ArrayList<>());
             for (int col = 0; col < 8; col++) {
-                boardState.get(row).add("-");
+                boardUICells.get(row).add(new Cell(this));
                 // for now... `-` indicates a blank space
                 // this isn't finished at all yet.. still in debugging stage
             }
         }
-        return boardState;
+        return boardUICells;
     }
 
     private void displayBoard() {
@@ -86,34 +89,37 @@ public class BoardWindow extends Window implements Observer {
         // debugging this
         int selectedRow = Integer.parseInt(gameState.get("selectedCell").substring(0,1));
         int selectedCol = Integer.parseInt(gameState.get("selectedCell").substring(1));
-        System.out.printf("selected cell is %d, %d\n", selectedRow, selectedCol);
+
+        // for debugging...
+        if (selectedRow != 9 && selectedCol != 9)
+            System.out.printf("selected cell is %d, %d\n", selectedRow, selectedCol);
 
         for (int row=0;row < 8; row++) {
             for (int col=0; col < 8; col++) {
-                JButton cell = new JButton();
-                cell.setSize(40, 40);
-                if (row % 2 == 0 && col % 2 == 0) cell.setBackground(darkColor);
-                else if (row % 2 == 1 && col % 2 == 1) cell.setBackground(darkColor);
-                else cell.setBackground(lightColor);
-                cell.setOpaque(true);
-                cell.setBorderPainted(false);
-
-                if (row == selectedRow && col == selectedCol) cell.setBackground(selectedColor);
+                Cell cell = boardUICells.get(row).get(col);
+                //JButton cell = new JButton();
+                //cell.setSize(40, 40);
+                if (row % 2 == col % 2) cell.setColor(darkColor);
+                else cell.setColor(lightColor);
+                if (row == selectedRow && col == selectedCol) cell.setColor(selectedColor);
 
                 // this is how the clicked cell tells the board which
-                String coords = new Integer(row).toString() + new Integer(col).toString();
-                cell.setActionCommand(coords);
+                cell.setPosition(row, col);
 
-
+                //String coords = new Integer(row).toString() + new Integer(col).toString();
+                //cell.setActionCommand(coords);
+                cell.setCellState(boardState.get(row).get(col));
 
                 // adding text for now to represent board state for each square
+                /*
                 if (!boardState.get(row).get(col).equals("-")) {
                     JLabel label = new JLabel(boardState.get(row).get(col));
                     label.setForeground(WHITE);
                     cell.add(label);
                 }
+                */
 
-                cell.addActionListener(this);
+                //cell.addActionListener(this);
                 boardUI.add(cell);
             }
         }
