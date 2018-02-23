@@ -24,17 +24,22 @@ public class GUI {
 
     public void updateState(HashMap<String, String> newState) {
         String newView = newState.get("view");
-        ArrayList<ArrayList<String>> boardState =  myApp.getBoardState();
+        //ArrayList<ArrayList<String>> boardState =  myApp.getBoardState();
 
         if (!newView.equals(currentView)) {
             System.out.println("new view: " + newView); // FOR DEBUGGING
             if (newView.equals("options")) optionsMenu = new OptionsWindow(this, newState);
             if (newView.equals("main")) mainMenu = new MenuWindow(this, newState);
             if (newView.equals("board")) {
-                Board newBoard = myApp.getBoard();
-                gameScreen = new BoardWindow(this, newState, boardState);
+                //Board newBoard = myApp.getBoard();
+                gameScreen = new BoardWindow(this, newState);
+                startNewGame(gameScreen);
             }
         }
+    }
+
+    public void startNewGame(BoardWindow gameScreen) {
+        myApp.startNewGame(gameScreen);
     }
 
     public void setView(String newView) {

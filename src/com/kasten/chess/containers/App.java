@@ -1,5 +1,7 @@
 package com.kasten.chess.containers;
 
+import com.kasten.chess.views.BoardWindow;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -11,7 +13,7 @@ public class App {
 
     public App() {
         options = new HashMap<>();
-        myBoard = new Board();
+        //myBoard = new Board();
         myGUI = new GUI(this);
         setInitialOptions();
     }
@@ -46,5 +48,11 @@ public class App {
 
     public void setSelected(String selected) {
         myBoard.setSelected(selected);
+    }
+
+    public void startNewGame(BoardWindow gameScreen) {
+        myBoard = new Board();
+        myBoard.addObserver(gameScreen);
+        myBoard.updateDisplay();
     }
 }

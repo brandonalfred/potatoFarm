@@ -24,7 +24,7 @@ public class Board extends Observable {
     public Board() {
         gameState = new HashMap<>();
         players = new ArrayList<>();
-        players.add(new Human(1)); // <- this is the method that should add pieces
+        players.add(new Human(1)); // <- we'll have to add a player 2 here eventually
         board = generateBlankBoard();
         setInitialGameState();
         addPieces();
@@ -73,6 +73,11 @@ public class Board extends Observable {
 
     public void setSelected(String selected) {
         gameState.put("selectedCell", selected);
+        setChanged();
+        notifyObservers(gameState);
+    }
+
+    public void updateDisplay() {
         setChanged();
         notifyObservers(gameState);
     }

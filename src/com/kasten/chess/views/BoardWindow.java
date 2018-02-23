@@ -20,6 +20,7 @@ import static com.sun.glass.ui.Cursor.setVisible;
 import static java.awt.Color.*;
 
 public class BoardWindow extends Window implements Observer {
+    private HashMap<String, String> gameState;
     private ArrayList<ArrayList<String>> boardState;
     private JPanel boardUI;
     private Color darkColor;
@@ -29,12 +30,13 @@ public class BoardWindow extends Window implements Observer {
     private JButton quitButton;
     // there should be a Board object here
 
-    public BoardWindow(GUI container, HashMap<String, String> state, ArrayList<ArrayList<String>> boardState) {
+    public BoardWindow(GUI container, HashMap<String, String> state) {
         super(container, state);
         setTitle("Griffin Chess");
-        this.boardState = boardState;
+        //this.boardState = boardState;
+        //boardState = generateBlankBoard();
         applyBoardTheme();
-        constructBoard();
+        //displayBoard();
 
         /* 'Quit' and 'Take Turn' Buttons */
         quitButton = new JButton("Quit");
@@ -56,13 +58,25 @@ public class BoardWindow extends Window implements Observer {
             lightColor = GRAY;
         }
 
-    private void constructBoard() {
-        // THIS METHOD SHOULD EVENTUALLY GO IN THE BOARD CLASS ?? should it ??
+    private ArrayList<ArrayList<String>> generateBlankBoard() {
+        boardState = new ArrayList<>();
+        for (int row = 0; row < 8; row++) {
+            boardState.add(new ArrayList<>());
+            for (int col = 0; col < 8; col++) {
+                boardState.get(row).add("-");
+                // for now... `-` indicates a blank space
+                // this isn't finished at all yet.. still in debugging stage
+            }
+        }
+        return boardState;
+    }
+
+    private void displayBoard() {
         GridLayout gridLayout = new GridLayout(8,8);
         boardUI = new JPanel(gridLayout);
         int boardMargin = 20;
         int boardSize = 360;
-        boardUI.setBounds(boardMargin,boardMargin, boardSize, boardSize);
+        boardUI.setBounds(boardMargin, boardMargin, boardSize, boardSize);
         darkColor = BLACK;
         lightColor = RED;
         selectedColor = GREEN;
@@ -70,8 +84,8 @@ public class BoardWindow extends Window implements Observer {
         add(boardUI);
 
         // debugging this
-        int selectedRow = Integer.parseInt(state.get("selectedCell").substring(0,1));
-        int selectedCol = Integer.parseInt(state.get("selectedCell").substring(1));
+        int selectedRow = Integer.parseInt(gameState.get("selectedCell").substring(0,1));
+        int selectedCol = Integer.parseInt(gameState.get("selectedCell").substring(1));
         System.out.printf("selected cell is %d, %d\n", selectedRow, selectedCol);
 
         for (int row=0;row < 8; row++) {
@@ -85,10 +99,11 @@ public class BoardWindow extends Window implements Observer {
                 cell.setBorderPainted(false);
 
                 if (row == selectedRow && col == selectedCol) cell.setBackground(selectedColor);
-                // woah
+
+                // this is how the clicked cell tells the board which
                 String coords = new Integer(row).toString() + new Integer(col).toString();
                 cell.setActionCommand(coords);
-                // woah
+
 
 
                 // adding text for now to represent board state for each square
@@ -114,16 +129,20 @@ public class BoardWindow extends Window implements Observer {
                 break;
             case "Confirm":
                 System.out.println("Taking Turn...");
+                break;
             default:
                 System.out.println(buttonType);
                 myGUI.setSelected(buttonType);
+                break;
         }
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        boardState = (ArrayList<ArrayList<String>>) arg;
+        System.out.println("receiving update from board...");
+        gameState = ( HashMap<String, String> ) arg;
         Board myBoard = ( Board ) o;
-        constructBoard();
+        boardState = myBoard.getBoard();
+        displayBoard();
     }
 }
