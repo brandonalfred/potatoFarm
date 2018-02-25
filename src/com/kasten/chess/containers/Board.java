@@ -94,10 +94,12 @@ public class Board extends Observable {
         for (Player player : players) {
             //System.out.printf("players in game - %s\n", player.getType());
             for (Piece piece : player.getPieces()) {
-                boardState.get(piece.getRow()).set(piece.getCol(), Integer.toString(piece.getOwner())
-                        + piece.getType().substring(0,1).toUpperCase()
-                        + setID(piece.getID()));
-                //System.out.printf("piece at %d, %d\n", piece.getRow(), piece.getCol());
+                if (piece.isAlive()) {
+                    boardState.get(piece.getRow()).set(piece.getCol(), Integer.toString(piece.getOwner())
+                            + piece.getType().substring(0, 1).toUpperCase()
+                            + setID(piece.getID()));
+                    //System.out.printf("piece at %d, %d\n", piece.getRow(), piece.getCol());
+                }
             }
         }
     }
@@ -138,7 +140,7 @@ public class Board extends Observable {
                 if (owner == activePlayer) {
                     selectedCell.add(row);
                     selectedCell.add(col);
-                    setDestinations(row, col, pieceID);
+                    setDestinations(pieceID);
                     System.out.printf("Clicked Piece %s\n", pieceID);
                 }
             }
@@ -152,7 +154,7 @@ public class Board extends Observable {
         updateDisplay();
     }
 
-    private void setDestinations(int row, int col, int pieceID) {
+    private void setDestinations(int pieceID) {
         int destRow;
         int destCol;
         String cellState;
