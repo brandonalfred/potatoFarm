@@ -20,6 +20,10 @@ public class Human implements Player {
     }
 
     @Override
+    public int getID() {
+        return playerID;
+    }
+    @Override
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
@@ -31,10 +35,14 @@ public class Human implements Player {
 
     @Override
     public ArrayList<Piece> generateNewPieces() {
+        // how should we do the pieces?
+        // factory pattern?
         ArrayList<Piece> newPieces = new ArrayList<>();
+        int pieceID = 0;
         for (int i=0; i<8; i++) {
-            newPieces.add(new Pawn(playerID, 6, i));
+            newPieces.add(new Pawn(playerID, pieceID,6, i));
             // this is using hardcoded test values <- don't leave these!
+            pieceID++;
         }
         return newPieces;
     }

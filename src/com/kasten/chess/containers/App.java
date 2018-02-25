@@ -2,9 +2,7 @@ package com.kasten.chess.containers;
 
 import com.kasten.chess.views.BoardWindow;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Observable;
 
 public class App {
     private HashMap<String, String> options;
@@ -13,7 +11,6 @@ public class App {
 
     public App() {
         options = new HashMap<>();
-        //myBoard = new Board();
         myGUI = new GUI(this);
         setInitialOptions();
     }
@@ -23,27 +20,13 @@ public class App {
         options.put("theme", "day");
         options.put("opponent", "robot");
         options.put("difficulty", "normal");
-        options.put("activePlayer", "one");
-        options.put("selectedCell", "99");
-
-        myGUI.updateState(options);
+        options.put("activePlayer", "one"); // this will probably go in gameState instead
+        myGUI.updateView(options);
     }
 
     public void setOptions(HashMap<String, String> newState) {
         options = newState;
-        myGUI.updateState(options);
-    }
-
-    public HashMap<String, String> getOptions() {
-        return options;
-    }
-
-    public ArrayList<ArrayList<String>> getBoardState() {
-        return myBoard.getBoard();
-    }
-
-    public Board getBoard() {
-        return myBoard;
+        myGUI.updateView(options);
     }
 
     public void setSelected(String selected) {
@@ -51,8 +34,19 @@ public class App {
     }
 
     public void startNewGame(BoardWindow gameScreen) {
+        // here is where we could get the Player2 and pass that to the constructor to set 2nd player
+        // also difficulty level could be set in the same way
         myBoard = new Board();
         myBoard.addObserver(gameScreen);
         myBoard.updateDisplay();
+    }
+
+    public void setView(String newView) {
+        options.put("view", newView);
+        myGUI.updateView(options);
+    }
+
+    public void confirmMove() {
+        myBoard.confirmMove();
     }
 }

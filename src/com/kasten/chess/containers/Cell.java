@@ -1,12 +1,18 @@
 package com.kasten.chess.containers;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-import static java.awt.Color.WHITE;
+import static java.awt.Color.*;
 
 public class Cell extends JButton {
+    private Color darkColor;
+    private Color lightColor;
+    private Color selectedColor;
+    private Color destColor;
+    private Color targetColor;
     private int row;
     private int col;
 
@@ -14,24 +20,45 @@ public class Cell extends JButton {
         addActionListener(container);
         setSize(40, 40);
         setOpaque(true);
-        setBorderPainted(false);
+        setContentAreaFilled(true);
+        setBorder(new LineBorder(BLACK));
+        row = 0;
+        col = 0;
+        darkColor = BLACK;
+        lightColor = RED;
+        selectedColor = GREEN;
+        destColor = YELLOW;
+        targetColor = BLUE;
     }
 
-    public void setColor(Color color) {
-        setBackground(color);
+    private void setCellColor(String theme, String cellState) {
+        if (theme.equals("night"))
+            lightColor = GRAY;
+
+        String cellColor = cellState.substring(cellState.length()-1);
+        if (cellColor.equals("~")) setBackground(selectedColor);
+        else if (cellColor.equals(".")) setBackground(destColor);
+        else if (cellColor.equals("?")) setBackground(targetColor);
+        else if (row % 2 == col % 2) setBackground(darkColor);
+        else setBackground(lightColor);
     }
 
-    public void setCellState(String cellState) {
-        if (!cellState.equals("-")) {
-            JLabel label = new JLabel(cellState);
-            label.setForeground(WHITE);
-            add(label);
+    public void setCellGraphics(String theme, String cellState) {
+        setCellColor(theme, cellState);
+
+        if (cellState.substring(0,1).equals("-")) {
+            // can set substring here to get desired label...
+            // will eventually become icon
+            setText("");
+        } else {
+            setText(cellState.substring(1,4));
+            setForeground(WHITE);
         }
     }
 
     public void setPosition(int row, int col) {
         this.row = row;
         this.col = col;
-        setActionCommand(new Integer(row).toString() + new Integer(col).toString());
+        setActionCommand(Integer.toString(row) + Integer.toString(col));
     }
 }

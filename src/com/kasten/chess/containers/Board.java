@@ -13,76 +13,182 @@ import com.kasten.chess.players.Human;
 import com.kasten.chess.players.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Observable;
 
+import static java.lang.Integer.parseInt;
+
 public class Board extends Observable {
-    private HashMap<String, String> gameState;
-    private ArrayList<ArrayList<String>> board;
+    private ArrayList<ArrayList<String>> boardState;
+    private int activePlayer;
+    private ArrayList<Integer> selectedCell;
+    private ArrayList<Integer> targetCell;
+    private ArrayList<ArrayList<Integer>> destinations;
     private ArrayList<Player> players;
 
     public Board() {
-        gameState = new HashMap<>();
         players = new ArrayList<>();
-        players.add(new Human(1)); // <- we'll have to add a player 2 here eventually
-        board = generateBlankBoard();
-        setInitialGameState();
+        players.add(new Human(0)); // <- we'll have to add a player 2 here eventually
+        activePlayer = 0;
+        boardState = generateBlankBoard();
+        selectedCell = new ArrayList<>();
+        targetCell = new ArrayList<>();
+        destinations = new ArrayList<>();
         addPieces();
+
     }
 
     private ArrayList<ArrayList<String>> generateBlankBoard() {
-        board = new ArrayList<>();
+        boardState = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
-            board.add(new ArrayList<>());
+            boardState.add(new ArrayList<>());
             for (int col = 0; col < 8; col++) {
-                board.get(row).add("-");
+                boardState.get(row).add("-");
                 // for now... `-` indicates a blank space
-                // this isn't finished at all yet.. still in debugging stage
             }
         }
-        return board;
+        return boardState;
     }
 
-    public void setInitialGameState() {
-        gameState.put("activePlayer", "one");
-        gameState.put("selectedCell", "99");
+    private void generateNewBoard() {
+        boardState = generateBlankBoard();
+        addPieces();
+        markSpecialCells();
     }
 
-    public void addPieces() {
+    private void markSpecialCells() {
+        if (!selectedCell.isEmpty()) {
+            int selRow = selectedCell.get(0);
+            int selCol = selectedCell.get(1);
+            String cellState = boardState.get(selRow).get(selCol);
+            boardState.get(selRow).set(selCol, cellState.concat("~"));
+
+            if (!destinations.isEmpty()) {
+                for (ArrayList<Integer> destination : destinations) {
+                    int destRow = destination.get(0);
+                    int destCol = destination.get(1);
+                    cellState = boardState.get(destRow).get(destCol);
+                    boardState.get(destRow).set(destCol, cellState.concat("."));
+                }
+
+                if (!targetCell.isEmpty()) {
+                    int targetRow = targetCell.get(0);
+                    int targetCol = targetCell.get(1);
+                    cellState = boardState.get(targetRow).get(targetCol);
+                    boardState.get(targetRow).set(targetCol, cellState.concat("?"));
+                }
+            }
+        }
+    }
+
+    private void addPieces() {
         for (Player player : players) {
-            System.out.printf("players in game - %s\n", player.getType());
+            //System.out.printf("players in game - %s\n", player.getType());
             for (Piece piece : player.getPieces()) {
-                board.get(piece.getRow()).set(piece.getColumn(), piece.getType());
-                System.out.printf("piece at %d, %d\n", piece.getRow(), piece.getColumn());
+                boardState.get(piece.getRow()).set(piece.getCol(), new Integer(piece.getOwner()).toString()
+                        + piece.getType().substring(0,1).toUpperCase()
+                        + setPieceID(piece.getID()));
+                //System.out.printf("piece at %d, %d\n", piece.getRow(), piece.getCol());
             }
         }
-
     }
 
-    public ArrayList<ArrayList<String>> getBoard() {
-        return board;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void debugBoardOutput() {
-        // print out some debug stuff
+    private String setPieceID(int pieceID) {
+        if (pieceID < 10)
+            return "0" + new Integer(pieceID).toString();
+        return new Integer(pieceID).toString();
     }
 
     public void setSelected(String selected) {
-        gameState.put("selectedCell", selected);
-        setChanged();
-        notifyObservers(gameState);
+        // assume player is able to click
+        // will have to find a way to prevent input while player 2 is taking turn
+
+        // this will have to be changed for 2 players!
+
+        // logic of IF cell should be selected goes in here.
+        // by the time we make it to the window.. its already been validated
+
+        targetCell.clear();
+
+        int row = parseInt(selected.substring(0,1));
+        int col = parseInt(selected.substring(1));
+        String cellState = boardState.get(row).get(col);
+
+        // check for an available move
+        String moveCheck = cellState.substring(selected.length()-1);
+        if (!moveCheck.equals(".")) {
+            // new piece selection
+            selectedCell.clear();
+
+            // cant select an empty cell
+            if (!boardState.get(row).get(col).equals("-")) {
+
+                int owner = Integer.parseInt(boardState.get(row).get(col).substring(0,1));
+                String piece = boardState.get(row).get(col).substring(1,2);
+                int pieceID = Integer.parseInt(boardState.get(row).get(col).substring(2,4));
+
+                if (owner == activePlayer) {
+                    selectedCell.add(row);
+                    selectedCell.add(col);
+                    setDestinations(row, col, pieceID);
+                    System.out.printf("Clicked Piece %s\n", pieceID);
+                }
+            }
+        } else {
+            // handle a valid move selection
+            // but wait for confirmation
+            targetCell.add(row);
+            targetCell.add(col);
+
+        }
+        updateDisplay();
+    }
+
+    private void setDestinations(int row, int col, int pieceID) {
+        int destRow;
+        int destCol;
+        String cellState;
+
+        // clear old destinations
+        destinations.clear();
+
+        // get legal destinations from the piece itself
+        destinations = players.get(activePlayer).getPieces().get(pieceID).getAvailableMoves();
+
+        // mark all the proper cells
+        for (ArrayList<Integer> destination : destinations) {
+            destRow = destination.get(0);
+            destCol = destination.get(1);
+            cellState = boardState.get(destRow).get(destCol);
+            boardState.get(destRow).set(destCol, cellState.concat("."));
+        }
+
     }
 
     public void updateDisplay() {
+        generateNewBoard();
         setChanged();
-        notifyObservers(gameState);
+        notifyObservers(boardState);
     }
-    // add a startGame() method that calls both players.generatePieces() method?
 
-    // there shouldn't be a problem adding a players pieces to the board
-    // position is a row/col array [1, 3]
+    public void confirmMove() {
+        if (!targetCell.isEmpty()) {
+            int pieceRow = selectedCell.get(0);
+            int pieceCol = selectedCell.get(1);
+            int targetRow = targetCell.get(0);
+            int targetCol = targetCell.get(1);
+
+            // identify the piece
+            String cellState = boardState.get(pieceRow).get(pieceCol);
+            int pieceID = Integer.parseInt(cellState.substring(2,4));
+
+            // call the pieces move method
+            players.get(activePlayer).getPieces().get(pieceID).movePiece(targetRow, targetCol);
+
+            // update the view
+            selectedCell.clear();
+            destinations.clear();
+            targetCell.clear();
+            updateDisplay();
+        }
+    }
 }

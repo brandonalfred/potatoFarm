@@ -1,45 +1,29 @@
 package com.kasten.chess.views;
 
-import com.kasten.chess.containers.Board;
 import com.kasten.chess.containers.Cell;
 import com.kasten.chess.containers.GUI;
-import com.kasten.chess.pieces.Piece;
-import com.kasten.chess.players.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.sun.glass.ui.Cursor.setVisible;
-import static java.awt.Color.*;
-
 public class BoardWindow extends Window implements Observer {
-    private HashMap<String, String> gameState;
+    private String theme;
     private ArrayList<ArrayList<String>> boardState;
     private ArrayList<ArrayList<Cell>> boardUICells;
     private JPanel boardUI;
-    private Color darkColor;
-    private Color lightColor;
-    private Color selectedColor;
     private JButton takeTurnButton;
     private JButton quitButton;
-    // there should be a Board object here
 
     public BoardWindow(GUI container, HashMap<String, String> state) {
         super(container, state);
         setTitle("Griffin Chess");
-        //this.boardState = boardState;
-        //boardState = generateBlankBoard();
-        applyBoardTheme();
-        //displayBoard();
-        boardUICells = generateBlankBoard();
+        theme = state.get("theme");
+        boardUICells = generateBlankCells();
 
         /* 'Quit' and 'Take Turn' Buttons */
         quitButton = new JButton("Quit");
@@ -56,19 +40,12 @@ public class BoardWindow extends Window implements Observer {
         setVisible(true);
     }
 
-    private void applyBoardTheme() {
-        if (state.get("theme").equals("night"))
-            lightColor = GRAY;
-        }
-
-    private ArrayList<ArrayList<Cell>> generateBlankBoard() {
+    private ArrayList<ArrayList<Cell>> generateBlankCells() {
         boardUICells = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
             boardUICells.add(new ArrayList<>());
             for (int col = 0; col < 8; col++) {
                 boardUICells.get(row).add(new Cell(this));
-                // for now... `-` indicates a blank space
-                // this isn't finished at all yet.. still in debugging stage
             }
         }
         return boardUICells;
@@ -77,49 +54,20 @@ public class BoardWindow extends Window implements Observer {
     private void displayBoard() {
         GridLayout gridLayout = new GridLayout(8,8);
         boardUI = new JPanel(gridLayout);
+        // this should be in constructor or something.. not here
         int boardMargin = 20;
         int boardSize = 360;
+
         boardUI.setBounds(boardMargin, boardMargin, boardSize, boardSize);
-        darkColor = BLACK;
-        lightColor = RED;
-        selectedColor = GREEN;
-        applyBoardTheme();
         add(boardUI);
 
-        // debugging this
-        int selectedRow = Integer.parseInt(gameState.get("selectedCell").substring(0,1));
-        int selectedCol = Integer.parseInt(gameState.get("selectedCell").substring(1));
-
-        // for debugging...
-        if (selectedRow != 9 && selectedCol != 9)
-            System.out.printf("selected cell is %d, %d\n", selectedRow, selectedCol);
-
+        Cell cell;
         for (int row=0;row < 8; row++) {
             for (int col=0; col < 8; col++) {
-                Cell cell = boardUICells.get(row).get(col);
-                //JButton cell = new JButton();
-                //cell.setSize(40, 40);
-                if (row % 2 == col % 2) cell.setColor(darkColor);
-                else cell.setColor(lightColor);
-                if (row == selectedRow && col == selectedCol) cell.setColor(selectedColor);
-
-                // this is how the clicked cell tells the board which
+                String cellState = boardState.get(row).get(col);
+                cell = boardUICells.get(row).get(col);
                 cell.setPosition(row, col);
-
-                //String coords = new Integer(row).toString() + new Integer(col).toString();
-                //cell.setActionCommand(coords);
-                cell.setCellState(boardState.get(row).get(col));
-
-                // adding text for now to represent board state for each square
-                /*
-                if (!boardState.get(row).get(col).equals("-")) {
-                    JLabel label = new JLabel(boardState.get(row).get(col));
-                    label.setForeground(WHITE);
-                    cell.add(label);
-                }
-                */
-
-                //cell.addActionListener(this);
+                cell.setCellGraphics(theme, cellState);
                 boardUI.add(cell);
             }
         }
@@ -127,7 +75,6 @@ public class BoardWindow extends Window implements Observer {
 
     public void actionPerformed(ActionEvent e) {
         String buttonType = e.getActionCommand();
-        //setVisible(false);
         switch (buttonType) {
             case "Quit":
                 setVisible(false);
@@ -135,6 +82,7 @@ public class BoardWindow extends Window implements Observer {
                 break;
             case "Confirm":
                 System.out.println("Taking Turn...");
+                myGUI.confirmMove();
                 break;
             default:
                 System.out.println(buttonType);
@@ -145,10 +93,13 @@ public class BoardWindow extends Window implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        // maybe we can just use boardState here, and let gameState stay in 'Board'
         System.out.println("receiving update from board...");
-        gameState = ( HashMap<String, String> ) arg;
-        Board myBoard = ( Board ) o;
-        boardState = myBoard.getBoard();
+        boardState = ( ArrayList<ArrayList<String>> ) arg;
+
+        for (ArrayList row : boardState) {
+            System.out.println(row.toString());
+        }
         displayBoard();
     }
 }
