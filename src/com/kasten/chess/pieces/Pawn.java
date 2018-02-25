@@ -16,7 +16,7 @@ public class Pawn extends Observable implements Piece {
         row = startRow;
         col = startCol;
         isAlive = true;
-        //System.out.printf("creating pawn for player %d at %d, %d\n", ownerID, row, column);
+        System.out.printf("creating pawn for player %d at %d, %d\n", ownerID, row, col);
     }
 
     @Override
@@ -56,21 +56,37 @@ public class Pawn extends Observable implements Piece {
         ArrayList<Integer> newMove;
 
         // check for starting position
-        if (owner == 0 && row == 6) {
-            for (int newRow = (row-1); newRow >= (row-2); newRow--) {
+        if (owner == 0) {
+            if (row == 6) {
+                for (int newRow = (row - 1); newRow >= (row - 2); newRow--) {
+                    newMove = new ArrayList<>();
+                    newMove.add(newRow);
+                    newMove.add(col);
+                    availableMoves.add(newMove);
+                }
+            } else if (row > 0) {
+                // normally pawns only move one space
                 newMove = new ArrayList<>();
-                newMove.add(newRow);
+                newMove.add(row - 1);
                 newMove.add(col);
                 availableMoves.add(newMove);
             }
-        } else {
-            // normally pawns only move one space
-            newMove = new ArrayList<>();
-            newMove.add(row-1);
-            newMove.add(col);
-            availableMoves.add(newMove);
+        } else if (owner == 1) {
+            if (row == 1) {
+                for (int newRow = (row + 1); newRow <= (row + 2); newRow++) {
+                    newMove = new ArrayList<>();
+                    newMove.add(newRow);
+                    newMove.add(col);
+                    availableMoves.add(newMove);
+                }
+            } else if (row < 7){
+                // normally pawns only move one space
+                newMove = new ArrayList<>();
+                newMove.add(row + 1);
+                newMove.add(col);
+                availableMoves.add(newMove);
+            }
         }
-
         // we could add other potential moves if there's a capturable piece, etc
         return availableMoves;
     }

@@ -13,21 +13,25 @@ import com.kasten.chess.players.Human;
 import com.kasten.chess.players.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 
 import static java.lang.Integer.parseInt;
 
 public class Board extends Observable {
-    private ArrayList<ArrayList<String>> boardState;
+    private HashMap<String, String> gameOptions;
+    private ArrayList<Player> players;
     private int activePlayer;
+    private ArrayList<ArrayList<String>> boardState;
     private ArrayList<Integer> selectedCell;
     private ArrayList<Integer> targetCell;
     private ArrayList<ArrayList<Integer>> destinations;
-    private ArrayList<Player> players;
 
-    public Board() {
+    public Board(HashMap<String, String> options) {
+        gameOptions = options;
         players = new ArrayList<>();
         players.add(new Human(0)); // <- we'll have to add a player 2 here eventually
+        addSecondPlayer();
         activePlayer = 0;
         boardState = generateBlankBoard();
         selectedCell = new ArrayList<>();
@@ -35,6 +39,12 @@ public class Board extends Observable {
         destinations = new ArrayList<>();
         addPieces();
 
+    }
+
+    private void addSecondPlayer() {
+        if (gameOptions.get("opponent").equals("human")) {
+            players.add(new Human(1));
+        }
     }
 
     private ArrayList<ArrayList<String>> generateBlankBoard() {
@@ -84,18 +94,18 @@ public class Board extends Observable {
         for (Player player : players) {
             //System.out.printf("players in game - %s\n", player.getType());
             for (Piece piece : player.getPieces()) {
-                boardState.get(piece.getRow()).set(piece.getCol(), new Integer(piece.getOwner()).toString()
+                boardState.get(piece.getRow()).set(piece.getCol(), Integer.toString(piece.getOwner())
                         + piece.getType().substring(0,1).toUpperCase()
-                        + setPieceID(piece.getID()));
+                        + setID(piece.getID()));
                 //System.out.printf("piece at %d, %d\n", piece.getRow(), piece.getCol());
             }
         }
     }
 
-    private String setPieceID(int pieceID) {
+    private String setID(int pieceID) {
         if (pieceID < 10)
-            return "0" + new Integer(pieceID).toString();
-        return new Integer(pieceID).toString();
+            return "0" + Integer.toString(pieceID);
+        return Integer.toString(pieceID);
     }
 
     public void setSelected(String selected) {
@@ -183,6 +193,9 @@ public class Board extends Observable {
 
             // call the pieces move method
             players.get(activePlayer).getPieces().get(pieceID).movePiece(targetRow, targetCol);
+
+            // toggle the active player
+            activePlayer = (activePlayer + 1) % 2;
 
             // update the view
             selectedCell.clear();

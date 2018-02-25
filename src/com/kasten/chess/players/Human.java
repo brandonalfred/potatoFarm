@@ -38,9 +38,17 @@ public class Human implements Player {
         // how should we do the pieces?
         // factory pattern?
         ArrayList<Piece> newPieces = new ArrayList<>();
+        int startRow;
         int pieceID = 0;
+
+        if (playerID == 1) {
+            startRow = 1;
+        } else {
+            startRow = 6;
+        }
+
         for (int i=0; i<8; i++) {
-            newPieces.add(new Pawn(playerID, pieceID,6, i));
+            newPieces.add(new Pawn(playerID, pieceID, startRow, i));
             // this is using hardcoded test values <- don't leave these!
             pieceID++;
         }

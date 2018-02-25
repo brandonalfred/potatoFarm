@@ -20,7 +20,6 @@ public class App {
         options.put("theme", "day");
         options.put("opponent", "robot");
         options.put("difficulty", "normal");
-        options.put("activePlayer", "one"); // this will probably go in gameState instead
         myGUI.updateView(options);
     }
 
@@ -36,7 +35,7 @@ public class App {
     public void startNewGame(BoardWindow gameScreen) {
         // here is where we could get the Player2 and pass that to the constructor to set 2nd player
         // also difficulty level could be set in the same way
-        myBoard = new Board();
+        myBoard = new Board(options);
         myBoard.addObserver(gameScreen);
         myBoard.updateDisplay();
     }
