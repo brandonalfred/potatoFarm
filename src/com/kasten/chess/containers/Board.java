@@ -133,7 +133,6 @@ public class Board extends Observable {
             if (!boardState.get(row).get(col).equals("-")) {
 
                 int owner = Integer.parseInt(boardState.get(row).get(col).substring(0,1));
-                String piece = boardState.get(row).get(col).substring(1,2);
                 int pieceID = Integer.parseInt(boardState.get(row).get(col).substring(2,4));
 
                 if (owner == activePlayer) {
@@ -195,7 +194,7 @@ public class Board extends Observable {
             players.get(activePlayer).getPieces().get(pieceID).movePiece(targetRow, targetCol);
 
             // toggle the active player
-            activePlayer = (activePlayer + 1) % 2;
+            activePlayer = (activePlayer + 1) % players.size();
 
             // update the view
             selectedCell.clear();

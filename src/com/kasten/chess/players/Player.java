@@ -11,6 +11,5 @@ public interface Player {
     String getType();
     int getID();
     ArrayList<Piece> getPieces();
-    boolean isActive();
     ArrayList<Piece> generateNewPieces();
 }

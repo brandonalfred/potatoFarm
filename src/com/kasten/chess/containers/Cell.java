@@ -47,8 +47,7 @@ public class Cell extends JButton {
         setCellColor(theme, cellState);
 
         if (cellState.substring(0,1).equals("-")) {
-            // can set substring here to get desired label...
-            // will eventually become icon
+            // eventually text here will get replaced with an image
             setText("");
         } else {
             setText(cellState.substring(1,4));

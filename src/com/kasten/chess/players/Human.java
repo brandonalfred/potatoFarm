@@ -29,11 +29,6 @@ public class Human implements Player {
     }
 
     @Override
-    public boolean isActive() {
-        return false;
-    }
-
-    @Override
     public ArrayList<Piece> generateNewPieces() {
         // how should we do the pieces?
         // factory pattern?
