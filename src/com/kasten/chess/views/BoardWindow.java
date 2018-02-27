@@ -13,7 +13,6 @@ import java.util.Observer;
 
 public class BoardWindow extends Window implements Observer {
     private String theme;
-    private ArrayList<ArrayList<String>> boardState;
     private ArrayList<ArrayList<Cell>> boardUICells;
     private JPanel boardUI;
     private JButton takeTurnButton;
@@ -51,7 +50,7 @@ public class BoardWindow extends Window implements Observer {
         return boardUICells;
     }
 
-    private void displayBoard() {
+    private void displayBoard(ArrayList<ArrayList<String>> boardState) {
         GridLayout gridLayout = new GridLayout(8,8);
         boardUI = new JPanel(gridLayout);
         // this should be in constructor or something.. not here
@@ -93,13 +92,13 @@ public class BoardWindow extends Window implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        // maybe we can just use boardState here, and let gameState stay in 'Board'
         System.out.println("receiving update from board...");
-        boardState = ( ArrayList<ArrayList<String>> ) arg;
+        ArrayList<ArrayList<String>> boardState = ( ArrayList<ArrayList<String>> ) arg;
 
+        // this is for debugging only
         for (ArrayList row : boardState) {
             System.out.println(row.toString());
         }
-        displayBoard();
+        displayBoard(boardState);
     }
 }
