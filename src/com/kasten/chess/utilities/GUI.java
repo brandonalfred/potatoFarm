@@ -1,5 +1,6 @@
-package com.kasten.chess.containers;
+package com.kasten.chess.utilities;
 
+import com.kasten.chess.containers.App;
 import com.kasten.chess.views.BoardWindow;
 import com.kasten.chess.views.MenuWindow;
 import com.kasten.chess.views.OptionsWindow;

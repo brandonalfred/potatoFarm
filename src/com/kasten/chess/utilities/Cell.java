@@ -1,4 +1,4 @@
-package com.kasten.chess.containers;
+package com.kasten.chess.utilities;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

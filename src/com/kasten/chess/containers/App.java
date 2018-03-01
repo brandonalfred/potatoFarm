@@ -1,5 +1,6 @@
 package com.kasten.chess.containers;
 
+import com.kasten.chess.utilities.GUI;
 import com.kasten.chess.views.BoardWindow;
 
 import java.util.HashMap;

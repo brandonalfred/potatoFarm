@@ -1,7 +1,7 @@
 package com.kasten.chess.views;
 
-import com.kasten.chess.containers.Cell;
-import com.kasten.chess.containers.GUI;
+import com.kasten.chess.utilities.Cell;
+import com.kasten.chess.utilities.GUI;
 
 import javax.swing.*;
 import java.awt.*;
