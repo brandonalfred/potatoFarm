@@ -66,12 +66,10 @@ public abstract class aPiece implements Piece {
             return checkNewMove(distance, 1, -1);
         else
             return checkNewMove(distance, -1, 1);
-
     }
 
     public ArrayList<Integer> checkNewMove(int distance, int dirX, int dirY) {
         ArrayList<Integer> newMove = new ArrayList<>();
-
         int newRow = row + (dirY * distance);
         int newCol = col + (dirX * distance);
         if (boundsCheck(newRow) && boundsCheck(newCol)) {
@@ -81,6 +79,7 @@ public abstract class aPiece implements Piece {
         else {
             newMove.add(row);
             newMove.add(col);
+            //return null;
         }
         return newMove;
     }

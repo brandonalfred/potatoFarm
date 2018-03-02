@@ -76,7 +76,8 @@ public class Board extends Observable {
                     int destRow = destination.get(0);
                     int destCol = destination.get(1);
                     cellState = boardState.get(destRow).get(destCol);
-                    boardState.get(destRow).set(destCol, cellState.concat("."));
+                    if (destRow != selRow || destCol != selCol)
+                        boardState.get(destRow).set(destCol, cellState.concat("."));
                 }
 
                 if (!targetCell.isEmpty()) {
