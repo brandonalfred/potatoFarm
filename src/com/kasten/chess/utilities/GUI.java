@@ -31,12 +31,11 @@ public class GUI {
     }
 
     public void setOptions(HashMap<String, String> selectedOptions) {
-        // this can expand as we set more options.. opponent/difficulty etc
-        System.out.println("setting " + selectedOptions.get("theme"));
         myApp.setOptions(selectedOptions);
     }
 
     public void setSelected(String selected) {
+        // sets the selected Cell
         myApp.setSelected(selected);
     }
 

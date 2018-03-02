@@ -38,7 +38,6 @@ public class Board extends Observable {
         targetCell = new ArrayList<>();
         destinations = new ArrayList<>();
         addPieces();
-
     }
 
     private void addSecondPlayer() {
@@ -96,7 +95,8 @@ public class Board extends Observable {
             for (Piece piece : player.getPieces()) {
                 if (piece.isAlive()) {
                     boardState.get(piece.getRow()).set(piece.getCol(), Integer.toString(piece.getOwner())
-                            + piece.getType().substring(0, 1).toUpperCase()
+                            //+ piece.getType().substring(0, 1).toUpperCase()
+                            + "♙"
                             + setID(piece.getID()));
                     //System.out.printf("piece at %d, %d\n", piece.getRow(), piece.getCol());
                 }
@@ -111,11 +111,6 @@ public class Board extends Observable {
     }
 
     public void setSelected(String selected) {
-        // assume player is able to click
-        // will have to find a way to prevent input while player 2 is taking turn
-
-        // this will have to be changed for 2 players!
-
         // logic of IF cell should be selected goes in here.
         // by the time we make it to the window.. its already been validated
 

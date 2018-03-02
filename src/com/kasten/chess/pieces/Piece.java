@@ -3,15 +3,13 @@ package com.kasten.chess.pieces;
 import java.util.ArrayList;
 
 public interface Piece {
-    int getID();
     String getType();
+    int getID();
     int getOwner();
     int getRow();
     int getCol();
-    void movePiece(int row, int col);
     ArrayList<ArrayList<Integer>> getAvailableMoves();
+    void movePiece(int row, int col);
     boolean isAlive();
     void kill();
-
-
 }

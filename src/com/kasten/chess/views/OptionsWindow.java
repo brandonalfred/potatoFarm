@@ -6,15 +6,15 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 
-public class OptionsWindow extends Window {
+public class OptionsWindow extends aWindow {
     private ButtonGroup themeGroup;
     private ButtonGroup opponentGroup;
     private ButtonGroup difficultyGroup;
     private JButton cancelButton;
     private JButton applyButton;
 
-    public OptionsWindow(GUI container, HashMap<String, String> state) {
-        super(container, state);
+    public OptionsWindow(GUI parent, HashMap<String, String> state) {
+        super(parent, state);
         setTitle("Game Options");
 
         /* Options Buttons */

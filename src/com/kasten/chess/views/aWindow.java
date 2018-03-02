@@ -12,7 +12,7 @@ import static java.awt.Color.black;
 import static java.awt.Color.darkGray;
 import static java.awt.Color.lightGray;
 
-public abstract class Window extends JFrame implements ActionListener {
+public abstract class aWindow extends JFrame implements ActionListener {
     protected static final int  BUTTON_Y = 400;
     protected static final int  LEFT_BUTTON_X = 20;
     protected static final int  RIGHT_BUTTON_X = 280;
@@ -24,18 +24,18 @@ public abstract class Window extends JFrame implements ActionListener {
     protected Color bgColor;
     protected Color textColor;
 
-    public Window(GUI container, HashMap<String, String> state) {
-        myGUI = container;
+    public aWindow(GUI parent, HashMap<String, String> state) {
+        myGUI = parent;
         this.state = state;
         applyTheme();
         getContentPane().setBackground(bgColor);
         getContentPane().setForeground(textColor);
 
-        /* Window Format/Size/Position settings */
+        /* aWindow Format/Size/Position settings */
         setSize(400, 500);
         setLocation(450, 100);
 
-        /* Layout/Visibility Window Options */
+        /* Layout/Visibility aWindow Options */
         setLayout(null);
         setResizable(false);
     }

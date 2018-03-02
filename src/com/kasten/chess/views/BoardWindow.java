@@ -11,15 +11,15 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BoardWindow extends Window implements Observer {
+public class BoardWindow extends aWindow implements Observer {
     private String theme;
     private ArrayList<ArrayList<Cell>> boardUICells;
     private JPanel boardUI;
     private JButton takeTurnButton;
     private JButton quitButton;
 
-    public BoardWindow(GUI container, HashMap<String, String> state) {
-        super(container, state);
+    public BoardWindow(GUI parent, HashMap<String, String> state) {
+        super(parent, state);
         setTitle("Griffin Chess");
         theme = state.get("theme");
         boardUICells = generateBlankCells();

@@ -1,27 +1,11 @@
 package com.kasten.chess.pieces;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
-public class Pawn extends Observable implements Piece {
-    private int owner;
-    private int ID;
-    private int row;
-    private int col;
-    private boolean isAlive;
-
+public class Pawn extends aPiece {
     public Pawn(int ownerID, int pieceID, int startRow, int startCol) {
-        owner = ownerID;
-        ID = pieceID;
-        row = startRow;
-        col = startCol;
-        isAlive = true;
+        super(ownerID, pieceID, startRow, startCol);
         System.out.printf("creating pawn for player %d at %d, %d\n", ownerID, row, col);
-    }
-
-    @Override
-    public int getID() {
-        return ID;
     }
 
     @Override
@@ -30,74 +14,20 @@ public class Pawn extends Observable implements Piece {
     }
 
     @Override
-    public int getOwner() {
-        return owner;
-    }
-
-    @Override
-    public int getRow() {
-        return row;
-    }
-
-    @Override
-    public int getCol() {
-        return col;
-    }
-
-    @Override
-    public void movePiece(int newRow, int newCol) {
-        row = newRow;
-        col = newCol;
-    }
-
-    @Override
     public ArrayList<ArrayList<Integer>> getAvailableMoves() {
         ArrayList<ArrayList<Integer>> availableMoves = new ArrayList<>();
-        ArrayList<Integer> newMove;
 
-        // check for starting position
-        if (owner == 0) {
-            if (row == 6) {
-                for (int newRow = (row - 1); newRow >= (row - 2); newRow--) {
-                    newMove = new ArrayList<>();
-                    newMove.add(newRow);
-                    newMove.add(col);
-                    availableMoves.add(newMove);
-                }
-            } else if (row > 0) {
-                // normally pawns only move one space
-                newMove = new ArrayList<>();
-                newMove.add(row - 1);
-                newMove.add(col);
-                availableMoves.add(newMove);
+        if (row == getHomeRow()) {
+            for (int i = 1; i <= 2; i++) {
+                availableMoves.add(goForward(i));
             }
-        } else if (owner == 1) {
-            if (row == 1) {
-                for (int newRow = (row + 1); newRow <= (row + 2); newRow++) {
-                    newMove = new ArrayList<>();
-                    newMove.add(newRow);
-                    newMove.add(col);
-                    availableMoves.add(newMove);
-                }
-            } else if (row < 7){
-                // normally pawns only move one space
-                newMove = new ArrayList<>();
-                newMove.add(row + 1);
-                newMove.add(col);
-                availableMoves.add(newMove);
-            }
+        } else {
+            availableMoves.add(goForward(1));
         }
-        // we could add other potential moves if there's a capturable piece, etc
+        // check left diag
+
+
+        // check right diag
         return availableMoves;
-    }
-
-    @Override
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    @Override
-    public void kill() {
-        isAlive = false;
     }
 }

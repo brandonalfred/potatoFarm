@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 
 import java.util.HashMap;
 
-public class MenuWindow extends Window {
+public class MenuWindow extends aWindow {
     private JButton startButton;
     private JButton optionsButton;
 
-    public MenuWindow(GUI container, HashMap<String, String> state) {
-        super(container, state);
+    public MenuWindow(GUI parent, HashMap<String, String> state) {
+        super(parent, state);
         setTitle("Griffin Chess");
 
         /* Title */
