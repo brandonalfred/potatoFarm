@@ -1,4 +1,4 @@
-package com.kasten.chess.pieces;
+package src.com.kasten.chess.pieces;
 
 import java.util.ArrayList;
 
