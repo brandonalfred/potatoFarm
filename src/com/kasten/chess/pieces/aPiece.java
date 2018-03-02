@@ -1,6 +1,7 @@
 package com.kasten.chess.pieces;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public abstract class aPiece implements Piece {
     protected int owner;
@@ -46,15 +47,47 @@ public abstract class aPiece implements Piece {
     }
 
     public ArrayList<Integer> goForward(int distance) {
-        int direction;
+        if (owner == 0)
+            return checkNewMove(distance, 0, -1);
+        else
+            return checkNewMove(distance, 0, 1);
+    }
+
+    public ArrayList<Integer> goFrontLeft(int distance) {
+        if (owner == 0)
+            return checkNewMove(distance, -1, -1);
+        else
+            return checkNewMove(distance, 1, 1);
+
+    }
+
+    public ArrayList<Integer> goFrontRight(int distance) {
+        if (owner == 0)
+            return checkNewMove(distance, 1, -1);
+        else
+            return checkNewMove(distance, -1, 1);
+
+    }
+
+    public ArrayList<Integer> checkNewMove(int distance, int dirX, int dirY) {
         ArrayList<Integer> newMove = new ArrayList<>();
-        if (owner == 0) direction = -1;
-        else direction = 1;
-        int newRow = row + (direction * distance);
-        if (newRow > 7 || newRow < 0) newMove.add(row);
-        else newMove.add(newRow);
-        newMove.add(col);
+
+        int newRow = row + (dirY * distance);
+        int newCol = col + (dirX * distance);
+        if (boundsCheck(newRow) && boundsCheck(newCol)) {
+            newMove.add(newRow);
+            newMove.add(newCol);
+        }
+        else {
+            newMove.add(row);
+            newMove.add(col);
+        }
         return newMove;
+    }
+
+    public boolean boundsCheck(int move) {
+        if (move > 7 || move < 0) return false;
+        else return true;
     }
 
     public abstract ArrayList<ArrayList<Integer>> getAvailableMoves();

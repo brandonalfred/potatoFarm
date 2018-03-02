@@ -24,10 +24,15 @@ public class Pawn extends aPiece {
         } else {
             availableMoves.add(goForward(1));
         }
-        // check left diag
 
+        // these should be conditional
+        // they should only show as valid IF there's a piece available for capture
+
+        // check left diag
+        availableMoves.add(goFrontLeft(1));
 
         // check right diag
+        availableMoves.add(goFrontRight(1));
         return availableMoves;
     }
 }
