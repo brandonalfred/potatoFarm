@@ -1,12 +1,12 @@
-package src.com.kasten.chess.players;
+package com.kasten.chess.players;
 
-import src.com.kasten.chess.pieces.Pawn;
-import src.com.kasten.chess.pieces.Rook;
-import src.com.kasten.chess.pieces.Knight;
-import src.com.kasten.chess.pieces.King;
-import src.com.kasten.chess.pieces.Queen;
-import src.com.kasten.chess.pieces.Bishop;
-import src.com.kasten.chess.pieces.Piece;
+import com.kasten.chess.pieces.Pawn;
+import com.kasten.chess.pieces.Rook;
+import com.kasten.chess.pieces.Knight;
+import com.kasten.chess.pieces.King;
+import com.kasten.chess.pieces.Queen;
+import com.kasten.chess.pieces.Bishop;
+import com.kasten.chess.pieces.Piece;
 
 import java.util.ArrayList;
 
