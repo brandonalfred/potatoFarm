@@ -50,7 +50,7 @@ public class Cell extends JButton {
             // eventually text here will get replaced with an image
             setText("");
         } else {
-            setText(cellState.substring(1,4));
+            setText(cellState.substring(1,2));
             setForeground(WHITE);
         }
     }
