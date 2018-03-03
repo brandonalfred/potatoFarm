@@ -8,12 +8,10 @@ public class Pawn extends aPiece {
         System.out.printf("creating pawn for player %d at %d, %d\n", ownerID, row, col);
     }
 
-    @Override
     public String getType() {
-        return "pawn";
+        return "♙";
     }
 
-    @Override
     public ArrayList<ArrayList<Integer>> getAvailableMoves() {
         ArrayList<ArrayList<Integer>> availableMoves = new ArrayList<>();
 

@@ -10,7 +10,7 @@ public class Queen extends aPiece {
 
     @Override
     public String getType() {
-        return "queen";
+        return "♕";
     }
 
     @Override

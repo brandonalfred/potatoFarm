@@ -10,7 +10,7 @@ public class Knight extends aPiece {
 
     @Override
     public String getType() {
-        return "knight";
+        return "♘";
     }
 
     @Override

@@ -10,7 +10,7 @@ public class Bishop extends aPiece {
 
     @Override
     public String getType() {
-        return "bishop";
+        return "♗";
     }
 
     @Override

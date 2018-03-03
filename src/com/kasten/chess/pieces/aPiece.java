@@ -120,7 +120,6 @@ public abstract class aPiece implements Piece {
         else
             return checkNewMove(distance, 1, 2);
     }
-    
     public ArrayList<Integer> goKnightRightDown(int distance) {
         if (owner == 0)
             return checkNewMove(distance, 2, 1);
@@ -146,9 +145,7 @@ public abstract class aPiece implements Piece {
             return checkNewMove(distance, 2, 1);
     }
     //Yeah, it's a fuckton of them.
-    
 
-    
     public ArrayList<Integer> checkNewMove(int distance, int dirX, int dirY) {
         ArrayList<Integer> newMove = new ArrayList<>();
 

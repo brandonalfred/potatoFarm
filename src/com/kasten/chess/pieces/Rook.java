@@ -10,7 +10,7 @@ public class Rook extends aPiece {
 
     @Override
     public String getType() {
-        return "rook";
+        return "♖";
     }
 
     @Override

@@ -95,9 +95,9 @@ public class Board extends Observable {
             //System.out.printf("players in game - %s\n", player.getType());
             for (Piece piece : player.getPieces()) {
                 if (piece.isAlive()) {
-                    boardState.get(piece.getRow()).set(piece.getCol(), Integer.toString(piece.getOwner())
-                            //+ piece.getType().substring(0, 1).toUpperCase()
-                            + "♙"
+                    boardState.get(piece.getRow()).set(piece.getCol(),
+                            Integer.toString(piece.getOwner())
+                            + piece.getType()
                             + setID(piece.getID()));
                     //System.out.printf("piece at %d, %d\n", piece.getRow(), piece.getCol());
                 }

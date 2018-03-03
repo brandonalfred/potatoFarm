@@ -1,12 +1,6 @@
 package com.kasten.chess.players;
 
-import com.kasten.chess.pieces.Pawn;
-import com.kasten.chess.pieces.Rook;
-import com.kasten.chess.pieces.Knight;
-import com.kasten.chess.pieces.King;
-import com.kasten.chess.pieces.Queen;
-import com.kasten.chess.pieces.Bishop;
-import com.kasten.chess.pieces.Piece;
+import com.kasten.chess.pieces.*;
 
 import java.util.ArrayList;
 
@@ -35,39 +29,30 @@ public class Human implements Player {
 
     @Override
     public ArrayList<Piece> generateNewPieces() {
-        // how should we do the pieces?
-        // factory pattern?
+        PieceFactory pf = new PieceFactory();
         ArrayList<Piece> newPieces = new ArrayList<>();
-        int startRow;
+        int firstRow;
+        int secondRow;
         int pieceID = 0;
 
         if (playerID == 1) {
-            startRow = 1;
+            firstRow = 1;
+            secondRow = 0;
         } else {
-            startRow = 6;
+            firstRow = 6;
+            secondRow = 7;
         }
 
+        // first row
         for (int i=0; i<8; i++) {
-            newPieces.add(new Pawn(playerID, pieceID, startRow, i));
-            // this is using hardcoded test values <- don't leave these!
+            newPieces.add(pf.createPiece(playerID, pieceID, firstRow, i));
             pieceID++;
         }
-        newPieces.add(new Rook(playerID, pieceID, 7, 0));
-        pieceID++;
-        newPieces.add(new Knight(playerID, pieceID, 7, 1));
-        pieceID++;
-        newPieces.add(new Bishop(playerID, pieceID, 7, 2));
-        pieceID++;
-        newPieces.add(new Queen(playerID, pieceID, 7, 3));
-        pieceID++;
-        newPieces.add(new King(playerID, pieceID, 7, 4 ));
-        pieceID++;
-        newPieces.add(new Bishop(playerID, pieceID, 7, 5));
-        pieceID++;
-        newPieces.add(new Knight(playerID, pieceID, 7, 6));
-        pieceID++;
-        newPieces.add(new Rook(playerID, pieceID, 7, 7));
-        
+        // second row
+        for (int i=0; i<8;i++) {
+            newPieces.add(pf.createPiece(playerID, pieceID, secondRow, i));
+            pieceID++;
+        }
         return newPieces;
     }
 }
