@@ -16,17 +16,14 @@ public class King extends aPiece {
     @Override
     public ArrayList<ArrayList<Integer>> getAvailableMoves() {
         ArrayList<ArrayList<Integer>> availableMoves = new ArrayList<>();
-
-
-            availableMoves.add(goFrontRight(1));
-            availableMoves.add(goFrontLeft(1));
-            availableMoves.add(goRightBackward(1));
-            availableMoves.add(goLeftBackward(1));
-            availableMoves.add(goForward(1));
-            availableMoves.add(goBackward(1));
-            availableMoves.add(goRight(1));
-            availableMoves.add(goLeft(1));
-
+        checkSingleMove(availableMoves, goFrontRight(1));
+        checkSingleMove(availableMoves, goFrontLeft(1));
+        checkSingleMove(availableMoves, goBackRight(1));
+        checkSingleMove(availableMoves, goBackLeft(1));
+        checkSingleMove(availableMoves, goForward(1));
+        checkSingleMove(availableMoves, goBackward(1));
+        checkSingleMove(availableMoves, goRight(1));
+        checkSingleMove(availableMoves, goLeft(1));
         return availableMoves;
     }
 }

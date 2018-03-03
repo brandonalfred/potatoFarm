@@ -13,6 +13,8 @@ public class Pawn extends aPiece {
     }
 
     public ArrayList<ArrayList<Integer>> getAvailableMoves() {
+        // pawn needs lots of special collision detection
+
         ArrayList<ArrayList<Integer>> availableMoves = new ArrayList<>();
 
         if (row == getHomeRow()) {

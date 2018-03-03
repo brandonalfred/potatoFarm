@@ -16,15 +16,22 @@ public class Rook extends aPiece {
     @Override
     public ArrayList<ArrayList<Integer>> getAvailableMoves() {
         ArrayList<ArrayList<Integer>> availableMoves = new ArrayList<>();
-
         for (int i = 1; i <= 7; i++) {
-            availableMoves.add(goForward(i));
-            availableMoves.add(goBackward(i));
-            availableMoves.add(goRight(i));
-            availableMoves.add(goLeft(i));
-            
+            checkSingleMove(availableMoves, goForward(i));
+            if (pieceFound(goForward(i))) break;
         }
-
+        for (int i = 1; i <= 7; i++) {
+            checkSingleMove(availableMoves, goBackward(i));
+            if (pieceFound(goBackward(i))) break;
+        }
+        for (int i = 1; i <= 7; i++) {
+            checkSingleMove(availableMoves, goRight(i));
+            if (pieceFound(goRight(i))) break;
+        }
+        for (int i = 1; i <= 7; i++) {
+            checkSingleMove(availableMoves, goLeft(i));
+            if (pieceFound(goLeft(i))) break;
+        }
         return availableMoves;
     }
 }

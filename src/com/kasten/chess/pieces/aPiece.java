@@ -1,9 +1,6 @@
 package com.kasten.chess.pieces;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public abstract class aPiece implements Piece {
     protected int owner;
@@ -51,105 +48,105 @@ public abstract class aPiece implements Piece {
 
     public ArrayList<Integer> goForward(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 0, -1);
+            return inBoundsMove(distance, 0, -1);
         else
-            return checkNewMove(distance, 0, 1);
+            return inBoundsMove(distance, 0, 1);
     }
     public ArrayList<Integer> goBackward(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 0, 1);
+            return inBoundsMove(distance, 0, 1);
         else
-            return checkNewMove(distance, 0, -1);
+            return inBoundsMove(distance, 0, -1);
     }
     public ArrayList<Integer> goLeft(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, -1, 0);
+            return inBoundsMove(distance, -1, 0);
         else
-            return checkNewMove(distance, 1, 0);
+            return inBoundsMove(distance, 1, 0);
     }
     public ArrayList<Integer> goRight(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 1, 0);
+            return inBoundsMove(distance, 1, 0);
         else
-            return checkNewMove(distance, -1, 0);
+            return inBoundsMove(distance, -1, 0);
     }
     public ArrayList<Integer> goFrontLeft(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, -1, -1);
+            return inBoundsMove(distance, -1, -1);
         else
-            return checkNewMove(distance, 1, 1);
+            return inBoundsMove(distance, 1, 1);
     }
     public ArrayList<Integer> goFrontRight(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 1, -1);
+            return inBoundsMove(distance, 1, -1);
         else
-            return checkNewMove(distance, -1, 1);
+            return inBoundsMove(distance, -1, 1);
     }
-    public ArrayList<Integer> goLeftBackward(int distance) {
+    public ArrayList<Integer> goBackLeft(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, -1, 1);
+            return inBoundsMove(distance, -1, 1);
         else
-            return checkNewMove(distance, 1, -1);
+            return inBoundsMove(distance, 1, -1);
     }
-    public ArrayList<Integer> goRightBackward(int distance) {
+    public ArrayList<Integer> goBackRight(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 1, 1);
+            return inBoundsMove(distance, 1, 1);
         else
-            return checkNewMove(distance, -1, -1);
+            return inBoundsMove(distance, -1, -1);
     }
     
     //Movement for the Knight
     public ArrayList<Integer> goKnightDownRight(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 1, 2);
+            return inBoundsMove(distance, 1, 2);
         else
-            return checkNewMove(distance, -1, -2);
+            return inBoundsMove(distance, -1, -2);
     }
     public ArrayList<Integer> goKnightDownLeft(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, -1, 2);
+            return inBoundsMove(distance, -1, 2);
         else
-            return checkNewMove(distance, 1, -2);
+            return inBoundsMove(distance, 1, -2);
     }
     public ArrayList<Integer> goKnightUpRight(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 1, -2);
+            return inBoundsMove(distance, 1, -2);
         else
-            return checkNewMove(distance, -1, 2);
+            return inBoundsMove(distance, -1, 2);
     }
     public ArrayList<Integer> goKnightUpLeft(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, -1, -2);
+            return inBoundsMove(distance, -1, -2);
         else
-            return checkNewMove(distance, 1, 2);
+            return inBoundsMove(distance, 1, 2);
     }
     public ArrayList<Integer> goKnightRightDown(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 2, 1);
+            return inBoundsMove(distance, 2, 1);
         else
-            return checkNewMove(distance, -2, -1);
+            return inBoundsMove(distance, -2, -1);
     }
     public ArrayList<Integer> goKnightLeftDown(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, -2, 1);
+            return inBoundsMove(distance, -2, 1);
         else
-            return checkNewMove(distance, 2, -1);
+            return inBoundsMove(distance, 2, -1);
     }
     public ArrayList<Integer> goKnightRightUp(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, 2, -1);
+            return inBoundsMove(distance, 2, -1);
         else
-            return checkNewMove(distance, -2, 1);
+            return inBoundsMove(distance, -2, 1);
     }
     public ArrayList<Integer> goKnightLeftUp(int distance) {
         if (owner == 0)
-            return checkNewMove(distance, -2, -1);
+            return inBoundsMove(distance, -2, -1);
         else
-            return checkNewMove(distance, 2, 1);
+            return inBoundsMove(distance, 2, 1);
     }
     //Yeah, it's a fuckton of them.
 
-    public ArrayList<Integer> checkNewMove(int distance, int dirX, int dirY) {
+    public ArrayList<Integer> inBoundsMove(int distance, int dirX, int dirY) {
         ArrayList<Integer> newMove = new ArrayList<>();
 
         int newRow = row + (dirY * distance);
@@ -166,8 +163,7 @@ public abstract class aPiece implements Piece {
     }
 
     public boolean boundsCheck(int move) {
-        if (move > 7 || move < 0) return false;
-        else return true;
+        return move <= 7 && move >= 0;
     }
 
     public abstract ArrayList<ArrayList<Integer>> getAvailableMoves();
@@ -181,8 +177,21 @@ public abstract class aPiece implements Piece {
     }
 
     // **new** methods for collision/capturing
-    public String getCellState(int row, int col) {
-        return boardState.get(row).get(col);
+    public boolean pieceFound(ArrayList<Integer> newMove) {
+        String cell = getCellState(newMove);
+        if (isOccupied(cell)) return true;
+        else return false;
+    }
+
+    public void checkSingleMove(ArrayList<ArrayList<Integer>> movesList, ArrayList<Integer> newMove) {
+        movesList.add(newMove);
+        String cell = getCellState(newMove);
+        if (isOccupied(cell) && isOwnPiece(cell))
+            movesList.remove(movesList.size() - 1);
+    }
+
+    public String getCellState(List<Integer> position) {
+        return boardState.get(position.get(0)).get(position.get(1));
     }
 
     public boolean isOccupied(String cellState) {
@@ -192,9 +201,9 @@ public abstract class aPiece implements Piece {
             return false;
     }
 
-    public boolean isEnemyPiece(String cellState) {
+    public boolean isOwnPiece(String cellState) {
         if (cellState.length() >= 4)
-            if (Integer.parseInt(cellState.substring(0,1)) != getOwner())
+            if (Integer.parseInt(cellState.substring(0,1)) == getOwner())
                 return true;
         return false;
     }
