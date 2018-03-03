@@ -9,6 +9,7 @@ package com.kasten.chess.containers;
 // players have pieces
 
 import com.kasten.chess.pieces.Piece;
+import com.kasten.chess.pieces.aPiece;
 import com.kasten.chess.players.Human;
 import com.kasten.chess.players.Player;
 
@@ -38,6 +39,11 @@ public class Board extends Observable {
         targetCell = new ArrayList<>();
         destinations = new ArrayList<>();
         addPieces();
+
+        // experimental Piece Observer pattern
+        for (Player player : players)
+            for (Piece piece : player.getPieces())
+                addObserver(piece);
     }
 
     private void addSecondPlayer() {

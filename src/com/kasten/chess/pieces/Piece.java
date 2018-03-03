@@ -1,8 +1,9 @@
 package com.kasten.chess.pieces;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
-public interface Piece {
+public interface Piece extends Observer {
     String getType();
     int getID();
     int getOwner();

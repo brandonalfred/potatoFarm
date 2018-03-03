@@ -2,6 +2,8 @@ package com.kasten.chess.pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 
 public abstract class aPiece implements Piece {
     protected int owner;
@@ -9,6 +11,7 @@ public abstract class aPiece implements Piece {
     protected int row;
     protected int col;
     protected boolean isAlive;
+    protected ArrayList<ArrayList<String>> boardState;
 
     public aPiece(int ownerID, int pieceID, int startRow, int startCol) {
         owner = ownerID;
@@ -175,5 +178,29 @@ public abstract class aPiece implements Piece {
 
     public void kill() {
         isAlive = false;
+    }
+
+    // **new** methods for collision/capturing
+    public String getCellState(int row, int col) {
+        return boardState.get(row).get(col);
+    }
+
+    public boolean isOccupied(String cellState) {
+        if (!cellState.substring(0,1).equals("-"))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isEnemyPiece(String cellState) {
+        if (cellState.length() >= 4)
+            if (Integer.parseInt(cellState.substring(0,1)) != getOwner())
+                return true;
+        return false;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        this.boardState = ( ArrayList<ArrayList<String>> ) arg;
     }
 }
