@@ -1,7 +1,7 @@
-package com.kasten.chess.views;
+package com.griffin.chess.views;
 
-import com.kasten.chess.utilities.Cell;
-import com.kasten.chess.utilities.GUI;
+import com.griffin.chess.utilities.Cell;
+import com.griffin.chess.utilities.GUI;
 
 import javax.swing.*;
 import java.awt.*;

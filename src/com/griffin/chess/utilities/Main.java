@@ -1,6 +1,6 @@
-package com.kasten.chess.utilities;
+package com.griffin.chess.utilities;
 
-import com.kasten.chess.containers.App;
+import com.griffin.chess.containers.App;
 
 public class Main {
 

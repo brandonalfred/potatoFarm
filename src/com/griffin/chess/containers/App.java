@@ -1,7 +1,7 @@
-package com.kasten.chess.containers;
+package com.griffin.chess.containers;
 
-import com.kasten.chess.utilities.GUI;
-import com.kasten.chess.views.BoardWindow;
+import com.griffin.chess.utilities.GUI;
+import com.griffin.chess.views.BoardWindow;
 
 import java.util.HashMap;
 

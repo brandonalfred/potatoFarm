@@ -1,9 +1,9 @@
-package com.kasten.chess.players;
+package com.griffin.chess.players;
 
 // we should make Player an interface
 // then have a human and a robot class that implement the interface
 
-import com.kasten.chess.pieces.Piece;
+import com.griffin.chess.pieces.Piece;
 
 import java.util.ArrayList;
 

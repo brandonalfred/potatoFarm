@@ -1,6 +1,6 @@
-package com.kasten.chess.players;
+package com.griffin.chess.players;
 
-import com.kasten.chess.pieces.*;
+import com.griffin.chess.pieces.*;
 
 import java.util.ArrayList;
 

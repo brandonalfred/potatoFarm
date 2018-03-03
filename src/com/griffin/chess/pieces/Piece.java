@@ -1,4 +1,4 @@
-package com.kasten.chess.pieces;
+package com.griffin.chess.pieces;
 
 import java.util.ArrayList;
 import java.util.Observer;

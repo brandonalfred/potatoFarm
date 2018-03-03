@@ -1,4 +1,4 @@
-package com.kasten.chess.containers;
+package com.griffin.chess.containers;
 
 // once we add interactivity into the board window...
 // this Board container class will manage the state of the game
@@ -8,10 +8,9 @@ package com.kasten.chess.containers;
 // board has 2 players
 // players have pieces
 
-import com.kasten.chess.pieces.Piece;
-import com.kasten.chess.pieces.aPiece;
-import com.kasten.chess.players.Human;
-import com.kasten.chess.players.Player;
+import com.griffin.chess.pieces.Piece;
+import com.griffin.chess.players.Human;
+import com.griffin.chess.players.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.kasten.chess.pieces;
+package com.griffin.chess.pieces;
 
 public class PieceFactory {
     public Piece createPiece(int playerID, int pieceID, int row, int col) {

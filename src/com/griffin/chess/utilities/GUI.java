@@ -1,9 +1,9 @@
-package com.kasten.chess.utilities;
+package com.griffin.chess.utilities;
 
-import com.kasten.chess.containers.App;
-import com.kasten.chess.views.BoardWindow;
-import com.kasten.chess.views.MenuWindow;
-import com.kasten.chess.views.OptionsWindow;
+import com.griffin.chess.containers.App;
+import com.griffin.chess.views.BoardWindow;
+import com.griffin.chess.views.MenuWindow;
+import com.griffin.chess.views.OptionsWindow;
 
 import java.util.HashMap;
 
