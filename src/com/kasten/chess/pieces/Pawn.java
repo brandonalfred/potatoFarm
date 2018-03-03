@@ -14,14 +14,18 @@ public class Pawn extends aPiece {
 
     public ArrayList<ArrayList<Integer>> getAvailableMoves() {
         // pawn needs lots of special collision detection
-
+        String cell;
         ArrayList<ArrayList<Integer>> availableMoves = new ArrayList<>();
 
         if (row == getHomeRow()) {
             for (int i = 1; i <= 2; i++) {
-                availableMoves.add(goForward(i));
+                checkSingleMove(availableMoves, goForward(i));
+                if (pieceFound(goForward(i))) {
+                    availableMoves.remove(availableMoves.size()-1);
+                    break;
+                }
             }
-        } else {
+        } else if (!pieceFound(goForward(1))) {
             availableMoves.add(goForward(1));
         }
 
@@ -29,10 +33,14 @@ public class Pawn extends aPiece {
         // they should only show as valid IF there's a piece available for capture
 
         // check left diag
-        availableMoves.add(goFrontLeft(1));
+        cell = getCellState(goFrontLeft(1));
+        if (isOccupied(cell) && !isOwnPiece(cell))
+            availableMoves.add(goFrontLeft(1));
 
         // check right diag
-        availableMoves.add(goFrontRight(1));
+        cell = getCellState(goFrontRight(1));
+        if (isOccupied(cell) && !isOwnPiece(cell))
+            availableMoves.add(goFrontRight(1));
         return availableMoves;
     }
 }
