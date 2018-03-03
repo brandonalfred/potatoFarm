@@ -13,6 +13,7 @@ public class Cell extends JButton {
     private Color selectedColor;
     private Color destColor;
     private Color targetColor;
+    private Color battleColor;
     private int row;
     private int col;
 
@@ -24,6 +25,7 @@ public class Cell extends JButton {
         setBorder(new LineBorder(BLACK));
         row = 0;
         col = 0;
+        battleColor = PINK;
         darkColor = BLACK;
         lightColor = RED;
         selectedColor = GREEN;
@@ -39,6 +41,7 @@ public class Cell extends JButton {
         if (cellColor.equals("~")) setBackground(selectedColor);
         else if (cellColor.equals(".")) setBackground(destColor);
         else if (cellColor.equals("?")) setBackground(targetColor);
+        else if (cellColor.equals("x")) setBackground(battleColor);
         else if (row % 2 == col % 2) setBackground(darkColor);
         else setBackground(lightColor);
     }

@@ -30,7 +30,7 @@ public class Board extends Observable {
     public Board(HashMap<String, String> options) {
         gameOptions = options;
         players = new ArrayList<>();
-        players.add(new Human(0)); // <- we'll have to add a player 2 here eventually
+        players.add(new Human(0));
         addSecondPlayer();
         activePlayer = 0;
         boardState = generateBlankBoard();
@@ -70,19 +70,25 @@ public class Board extends Observable {
     }
 
     private void markSpecialCells() {
+        // check if something is selected
         if (!selectedCell.isEmpty()) {
             int selRow = selectedCell.get(0);
             int selCol = selectedCell.get(1);
             String cellState = boardState.get(selRow).get(selCol);
             boardState.get(selRow).set(selCol, cellState.concat("~"));
 
+            // check for any highlighted destinations
             if (!destinations.isEmpty()) {
                 for (ArrayList<Integer> destination : destinations) {
                     int destRow = destination.get(0);
                     int destCol = destination.get(1);
                     cellState = boardState.get(destRow).get(destCol);
                     if (destRow != selRow || destCol != selCol)
-                        boardState.get(destRow).set(destCol, cellState.concat("."));
+                        if (cellState.length() >= 4)
+                            // appropriately mark "enemy target" destinations
+                            boardState.get(destRow).set(destCol, cellState.concat("x"));
+                        else
+                            boardState.get(destRow).set(destCol, cellState.concat("."));
                 }
 
                 if (!targetCell.isEmpty()) {
@@ -126,9 +132,18 @@ public class Board extends Observable {
         int col = parseInt(selected.substring(1));
         String cellState = boardState.get(row).get(col);
 
-        // check for an available move
-        String moveCheck = cellState.substring(selected.length()-1);
-        if (!moveCheck.equals(".")) {
+        // check for an available move/capture
+        String moveCheck = cellState.substring(cellState.length()-1);
+        if (moveCheck.equals("x")) {
+            System.out.println("capture click!"); // <- capture debug
+            targetCell.add(row);
+            targetCell.add(col);
+        } else if (moveCheck.equals(".")) {
+            System.out.println("valid target click!"); // <- capture debug
+            targetCell.add(row);
+            targetCell.add(col);
+        } else {
+            System.out.println(moveCheck + " click!"); // <- capture debug
             // new piece selection
             selectedCell.clear();
 
@@ -145,35 +160,16 @@ public class Board extends Observable {
                     System.out.printf("Clicked Piece %s\n", pieceID);
                 }
             }
-        } else {
-            // handle a valid move selection
-            // but wait for confirmation
-            targetCell.add(row);
-            targetCell.add(col);
-
         }
         updateDisplay();
     }
 
     private void setDestinations(int pieceID) {
-        int destRow;
-        int destCol;
-        String cellState;
-
         // clear old destinations
         destinations.clear();
 
         // get legal destinations from the piece itself
         destinations = players.get(activePlayer).getPieces().get(pieceID).getAvailableMoves();
-
-        // mark all the proper cells
-        for (ArrayList<Integer> destination : destinations) {
-            destRow = destination.get(0);
-            destCol = destination.get(1);
-            cellState = boardState.get(destRow).get(destCol);
-            boardState.get(destRow).set(destCol, cellState.concat("."));
-        }
-
     }
 
     public void updateDisplay() {
@@ -183,6 +179,8 @@ public class Board extends Observable {
     }
 
     public void confirmMove() {
+        // here is where we should 'execute' the capture and call the kill method
+
         if (!targetCell.isEmpty()) {
             int pieceRow = selectedCell.get(0);
             int pieceCol = selectedCell.get(1);
@@ -192,6 +190,17 @@ public class Board extends Observable {
             // identify the piece
             String cellState = boardState.get(pieceRow).get(pieceCol);
             int pieceID = Integer.parseInt(cellState.substring(2,4));
+
+            // check for piece in target cell
+            String targetState = boardState.get(targetRow).get(targetCol);
+            // kill target piece if it exists
+            if (targetState.length() >= 4) {
+                int targetID = Integer.parseInt(targetState.substring(2,4));
+                int enemyID = Integer.parseInt(targetState.substring(0,1));
+
+                // call the pieces kill method
+                players.get(enemyID).getPieces().get(targetID).kill();
+            }
 
             // call the pieces move method
             players.get(activePlayer).getPieces().get(pieceID).movePiece(targetRow, targetCol);
