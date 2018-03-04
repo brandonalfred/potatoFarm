@@ -21,7 +21,8 @@ public class Pawn extends aPiece {
             for (int i = 1; i <= 2; i++) {
                 checkSingleMove(availableMoves, goForward(i));
                 if (pieceFound(goForward(i))) {
-                    availableMoves.remove(availableMoves.size()-1);
+                    if (!availableMoves.isEmpty())
+                        availableMoves.remove(availableMoves.size()-1);
                     break;
                 }
             }

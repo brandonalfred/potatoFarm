@@ -9,6 +9,7 @@ package com.griffin.chess.containers;
 // players have pieces
 
 import com.griffin.chess.pieces.Piece;
+import com.griffin.chess.players.CPU;
 import com.griffin.chess.players.Human;
 import com.griffin.chess.players.Player;
 
@@ -39,15 +40,22 @@ public class Board extends Observable {
         destinations = new ArrayList<>();
         addPieces();
 
-        // experimental Piece Observer pattern
-        for (Player player : players)
+        // experimental Piece/AI Observer pattern add-on
+        for (Player player : players) {
             for (Piece piece : player.getPieces())
                 addObserver(piece);
+            if (player.getType().equals("robot")) {
+                addObserver(player);
+            }
+        }
     }
 
     private void addSecondPlayer() {
+        int id = 1;
         if (gameOptions.get("opponent").equals("human")) {
-            players.add(new Human(1));
+            players.add(new Human(id));
+        } else {
+            players.add(new CPU(id));
         }
     }
 
@@ -179,40 +187,52 @@ public class Board extends Observable {
     }
 
     public void confirmMove() {
-        // here is where we should 'execute' the capture and call the kill method
+        if (players.get(activePlayer).getType().equals("human")) {
+            System.out.println("HUMAN TAKING TURN");    // <-- debugging AI
+            if (!targetCell.isEmpty()) {
+                int pieceRow = selectedCell.get(0);
+                int pieceCol = selectedCell.get(1);
+                int targetRow = targetCell.get(0);
+                int targetCol = targetCell.get(1);
 
-        if (!targetCell.isEmpty()) {
-            int pieceRow = selectedCell.get(0);
-            int pieceCol = selectedCell.get(1);
-            int targetRow = targetCell.get(0);
-            int targetCol = targetCell.get(1);
+                // identify the piece
+                String cellState = boardState.get(pieceRow).get(pieceCol);
+                int pieceID = Integer.parseInt(cellState.substring(2, 4));
 
-            // identify the piece
-            String cellState = boardState.get(pieceRow).get(pieceCol);
-            int pieceID = Integer.parseInt(cellState.substring(2,4));
+                // check for piece in target cell
+                String targetState = boardState.get(targetRow).get(targetCol);
+                // kill target piece if it exists
+                if (targetState.length() >= 4) {
+                    int targetID = Integer.parseInt(targetState.substring(2, 4));
+                    int enemyID = Integer.parseInt(targetState.substring(0, 1));
 
-            // check for piece in target cell
-            String targetState = boardState.get(targetRow).get(targetCol);
-            // kill target piece if it exists
-            if (targetState.length() >= 4) {
-                int targetID = Integer.parseInt(targetState.substring(2,4));
-                int enemyID = Integer.parseInt(targetState.substring(0,1));
+                    // call the enemy players' pieces' kill method
+                    players.get(enemyID).getPieces().get(targetID).kill();
+                }
 
-                // call the pieces kill method
-                players.get(enemyID).getPieces().get(targetID).kill();
+                // call the pieces move method
+                players.get(activePlayer).getPieces().get(pieceID).movePiece(targetRow, targetCol);
             }
-
-            // call the pieces move method
-            players.get(activePlayer).getPieces().get(pieceID).movePiece(targetRow, targetCol);
-
-            // toggle the active player
-            activePlayer = (activePlayer + 1) % players.size();
-
-            // update the view
-            selectedCell.clear();
-            destinations.clear();
-            targetCell.clear();
-            updateDisplay();
+        } else if (players.get(activePlayer).getType().equals("robot")) {
+            System.out.println("AI TAKING TURN");   // <-- debugging AI
         }
+
+        // toggle the active player
+        activePlayer = (activePlayer + 1) % players.size();
+
+        // update the view
+        selectedCell.clear();
+        destinations.clear();
+        targetCell.clear();
+        updateDisplay();
+        // let the CPU know to go
+        if (players.get(activePlayer).getType().equals("robot"))
+            notifyAI(players.get(activePlayer));
+    }
+
+    // AI stuff going in here
+    public void notifyAI(Player aiPlayer) {
+        aiPlayer.takeAITurn();
+        confirmMove();
     }
 }

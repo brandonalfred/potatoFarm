@@ -6,10 +6,12 @@ package com.griffin.chess.players;
 import com.griffin.chess.pieces.Piece;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
-public interface Player {
+public interface Player extends Observer {
     String getType();
     int getID();
     ArrayList<Piece> getPieces();
     ArrayList<Piece> generateNewPieces();
+    public void takeAITurn();
 }
