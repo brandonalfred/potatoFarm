@@ -13,7 +13,6 @@ public class Pawn extends aPiece {
     }
 
     public ArrayList<ArrayList<Integer>> getAvailableMoves() {
-        // pawn needs lots of special collision detection
         String cell;
         ArrayList<ArrayList<Integer>> availableMoves = new ArrayList<>();
 

@@ -8,8 +8,10 @@ import java.util.Random;
 
 public class CPU extends aPlayer {
     ArrayList<ArrayList<String>> currentBoardState;
-    public CPU(int ID) {
+    Player opponent;
+    public CPU(int ID, Player human) {
         super(ID);
+        opponent = human;
     }
 
     public String getType() { return "robot"; }
@@ -37,6 +39,18 @@ public class CPU extends aPlayer {
         ArrayList<Integer> randomMove = randomPiece.getAvailableMoves().get(new Random().nextInt(movesMax));
         int targetRow = randomMove.get(0);
         int targetCol = randomMove.get(1);
+
+        // check for piece in target cell
+        String targetState = currentBoardState.get(targetRow).get(targetCol);
+        // kill target piece if it exists
+        if (targetState.length() >= 4) {
+            int targetID = Integer.parseInt(targetState.substring(2, 4));
+            int enemyID = Integer.parseInt(targetState.substring(0, 1));
+
+            // call the enemy players' pieces' kill method
+            opponent.getPieces().get(targetID).kill();
+            System.out.println("AI CAPTURE!!"); // <-- debugging AI (random)
+        }
 
         // no handling for captures.. yet
         randomPiece.movePiece(targetRow, targetCol);

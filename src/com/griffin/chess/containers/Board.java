@@ -55,7 +55,7 @@ public class Board extends Observable {
         if (gameOptions.get("opponent").equals("human")) {
             players.add(new Human(id));
         } else {
-            players.add(new CPU(id));
+            players.add(new CPU(id, players.get(0)));
         }
     }
 
