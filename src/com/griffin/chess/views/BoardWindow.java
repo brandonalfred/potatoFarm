@@ -92,13 +92,15 @@ public class BoardWindow extends aWindow implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("receiving update from board...");
+        //System.out.println("receiving update from board...");
         ArrayList<ArrayList<String>> boardState = ( ArrayList<ArrayList<String>> ) arg;
 
         // this is for debugging only
+        /*
         for (ArrayList row : boardState) {
             System.out.println(row.toString());
         }
+        */
         displayBoard(boardState);
     }
 }

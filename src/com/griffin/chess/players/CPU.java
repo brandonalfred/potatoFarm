@@ -1,5 +1,6 @@
 package com.griffin.chess.players;
 
+import com.griffin.chess.containers.Board;
 import com.griffin.chess.pieces.Piece;
 
 import java.util.ArrayList;
@@ -9,26 +10,20 @@ import java.util.Random;
 public class CPU extends aPlayer {
     ArrayList<ArrayList<String>> currentBoardState;
     Player opponent;
-    public CPU(int ID, Player human) {
+    Board board;
+    public CPU(int ID, Player human, Board container) {
         super(ID);
         opponent = human;
+        board = container;
+
     }
 
     public String getType() { return "robot"; }
 
     public void takeAITurn() {
         System.out.println("INSIDE AI TURN");
-        /*
-        int boardCount = 0;
-        // for sample, generate boards for one piece
-        for (Piece piece : getPieces()) {
-            for (ArrayList<ArrayList<String>> board : getBoardsForPieceAI(piece)) {
-                boardCount++;
-                System.out.printf("AI BOARD # %d\n%s\n", boardCount, board.toString());
-            }
-        }
-        */
-        makeRandomMove();
+        //makeRandomMove();
+        calculateBestMove();
     }
 
     private void makeRandomMove() {
@@ -49,10 +44,10 @@ public class CPU extends aPlayer {
 
             // call the enemy players' pieces' kill method
             opponent.getPieces().get(targetID).kill();
-            System.out.println("AI CAPTURE!!"); // <-- debugging AI (random)
+            System.out.println("AI CAPTURE!!*********************\n\n"); // <-- debugging AI (evaluateBoard)
         }
 
-        // no handling for captures.. yet
+        // no special handling for captures.. yet
         randomPiece.movePiece(targetRow, targetCol);
         System.out.println("random move made!");
     }
@@ -87,6 +82,87 @@ public class CPU extends aPlayer {
         }
         return boardList;
     }
+
+    public ArrayList<ArrayList<String>> findBestBoard(ArrayList<ArrayList<ArrayList<String>>> boardList) {
+        int bestValue = -9999;
+        ArrayList<ArrayList<String>> bestBoard = new ArrayList<>();
+
+        for (ArrayList<ArrayList<String>> board : boardList) {
+            if (calculateBoardScore(board) > bestValue) {
+                bestValue = calculateBoardScore(board);
+                bestBoard = board;
+            }
+        }
+
+        //System.out.printf("******BEST SCORE: %d******\n", bestValue);  // <-- debugging ai moves
+        return bestBoard;
+    }
+
+
+
+    public void calculateBestMove() {
+        // maybe return a boardState?
+        // or just manually move the piece at the end of a function...
+
+        // initialize to a large negative number
+        int bestValue = -99999;
+
+        ArrayList<ArrayList<ArrayList<String>>> boardList = new ArrayList<>();
+        ArrayList<ArrayList<String>> bestBoard;
+        for (Piece piece : getPiecesWithMoves()) {
+            boardList.addAll(getBoardsForPieceAI(piece));
+        }
+        // best board here...
+        System.out.printf("Out of %d boards..\n", boardList.size());
+        bestBoard = findBestBoard(boardList);
+        board.setBoardState(findBestBoard(boardList));
+        System.out.printf("****\nBest move score %d\n****\n", calculateBoardScore(bestBoard));
+        for (int row = 0; row < 8; row++) {
+            System.out.println(bestBoard.get(row).toString());
+        }
+    }
+
+    public int calculateBoardScore(ArrayList<ArrayList<String>> board) {
+        int score = 0;
+        for (int row = 0;row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (!board.get(row).get(col).equals("-")) {
+                    int cellPlayerID = Integer.parseInt(board.get(row).get(col).substring(0,1));
+                    String cellPiece = board.get(row).get(col).substring(1,2);
+                    if (cellPlayerID == playerID) {
+                        //System.out.printf("adding %d\n", getPieceValue(cellPiece));
+                        score += getPieceValue(cellPiece);
+                        //System.out.printf("score is now %d\n", score);
+                    } else {
+                        //System.out.printf("subtracting %d\n", getPieceValue(cellPiece));
+                        score -= getPieceValue(cellPiece);
+                        //System.out.printf("score is now %d\n", score);
+                    }
+                }
+            }
+        }
+        //System.out.printf("calculated %d\n", score);
+        return score;
+    }
+
+    public int getPieceValue(String piece) {
+        if (piece.equals("♙")) {
+            return 10;
+        } else if (piece.equals("♖")) {
+            return 50;
+        } else if (piece.equals("♘")) {
+            return 30;
+        } else if (piece.equals("♗")) {
+            return 30;
+        } else if (piece.equals("♕")) {
+            return 90;
+        } else if (piece.equals("♔")) {
+            return 888;
+        } else {
+            return 0;
+        }
+    }
+
 
     @Override
     public void update(Observable o, Object arg) {

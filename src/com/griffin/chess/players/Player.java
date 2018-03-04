@@ -12,6 +12,7 @@ public interface Player extends Observer {
     String getType();
     int getID();
     ArrayList<Piece> getPieces();
+    ArrayList<Piece> getPiecesWithMoves();
     ArrayList<Piece> generateNewPieces();
     public void takeAITurn();
 }

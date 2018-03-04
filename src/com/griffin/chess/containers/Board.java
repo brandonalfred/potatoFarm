@@ -55,7 +55,7 @@ public class Board extends Observable {
         if (gameOptions.get("opponent").equals("human")) {
             players.add(new Human(id));
         } else {
-            players.add(new CPU(id, players.get(0)));
+            players.add(new CPU(id, players.get(0), this));
         }
     }
 
@@ -213,6 +213,7 @@ public class Board extends Observable {
                 // call the pieces move method
                 players.get(activePlayer).getPieces().get(pieceID).movePiece(targetRow, targetCol);
             }
+            updateDisplay();
         } else if (players.get(activePlayer).getType().equals("robot")) {
             System.out.println("AI TAKING TURN");   // <-- debugging AI
         }
@@ -224,7 +225,7 @@ public class Board extends Observable {
         selectedCell.clear();
         destinations.clear();
         targetCell.clear();
-        updateDisplay();
+        //updateDisplay();
         // let the CPU know to go
         if (players.get(activePlayer).getType().equals("robot"))
             notifyAI(players.get(activePlayer));
@@ -235,4 +236,10 @@ public class Board extends Observable {
         aiPlayer.takeAITurn();
         confirmMove();
     }
+
+    public void setBoardState(ArrayList<ArrayList<String>> newBoard) {
+        boardState = newBoard;
+        // this isn't a good way of updating it...
+    }
+
 }
