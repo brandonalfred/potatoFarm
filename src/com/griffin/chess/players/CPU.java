@@ -21,9 +21,10 @@ public class CPU extends aPlayer {
     public String getType() { return "robot"; }
 
     public void takeAITurn() {
-        System.out.println("INSIDE AI TURN");
+        //System.out.println("INSIDE AI TURN");
         //makeRandomMove();
-        calculateBestMove();
+        //calculateBestMove();
+        takeBestMove();
     }
 
     private void makeRandomMove() {
@@ -63,7 +64,7 @@ public class CPU extends aPlayer {
         return boardCopy;
     }
 
-    public ArrayList<ArrayList<ArrayList<String>>> getBoardsForPieceAI(Piece piece) {
+    public ArrayList<ArrayList<ArrayList<String>>> getAllBoardsForPiece(Piece piece) {
         // before we do full boards for a piece
         // lets just look at moves
         //System.out.printf("%s%d: %s\n",piece.getType(), piece.getID(), piece.getAvailableMoves().toString());
@@ -93,33 +94,61 @@ public class CPU extends aPlayer {
                 bestBoard = board;
             }
         }
-
         //System.out.printf("******BEST SCORE: %d******\n", bestValue);  // <-- debugging ai moves
         return bestBoard;
     }
 
+    public void takeBestMove() {
+        Piece bestPiece = null;
+        Piece targetPiece = null;
+        ArrayList<Integer> bestMove;
+        int bestValue = -9999;
+        int bestRow = 0;
+        int bestCol = 0;
 
-
-    public void calculateBestMove() {
-        // maybe return a boardState?
-        // or just manually move the piece at the end of a function...
-
-        // initialize to a large negative number
-        int bestValue = -99999;
-
-        ArrayList<ArrayList<ArrayList<String>>> boardList = new ArrayList<>();
-        ArrayList<ArrayList<String>> bestBoard;
         for (Piece piece : getPiecesWithMoves()) {
-            boardList.addAll(getBoardsForPieceAI(piece));
+            ArrayList<ArrayList<Integer>> movesList = piece.getAvailableMoves();
+            int actualRow = piece.getRow();
+            int actualCol = piece.getCol();
+            for (ArrayList<Integer> move : movesList) {
+                int moveRow = move.get(0);
+                int moveCol = move.get(1);
+                // find boardvalue of this move
+                // if its the best.. set all the best things
+                // then make the move with that piece the normal way
+
+                // build "future board" for each potential move
+                ArrayList<ArrayList<String>> boardCopy = getBoardCopy();
+                String cellState = currentBoardState.get(actualRow).get(actualCol);
+                boardCopy.get(actualRow).set(actualCol, "-");
+                boardCopy.get(moveRow).set(moveCol, cellState);
+                // compute score for that board
+                if (calculateBoardScore(boardCopy) > bestValue) {
+                    bestValue = calculateBoardScore(boardCopy);
+                    bestPiece = piece;
+                    bestMove = move;
+                    bestRow = bestMove.get(0);
+                    bestCol = bestMove.get(1);
+                }
+            }
         }
-        // best board here...
-        System.out.printf("Out of %d boards..\n", boardList.size());
-        bestBoard = findBestBoard(boardList);
-        board.setBoardState(findBestBoard(boardList));
-        System.out.printf("****\nBest move score %d\n****\n", calculateBoardScore(bestBoard));
-        for (int row = 0; row < 8; row++) {
-            System.out.println(bestBoard.get(row).toString());
+
+        // check for piece in target cell
+            String targetState = currentBoardState.get(bestRow).get(bestCol);
+
+        // kill target piece if it exists
+        if (targetState.length() >= 4) {
+            int targetID = Integer.parseInt(targetState.substring(2, 4));
+
+            // call the enemy players' pieces' kill method
+            targetPiece = opponent.getPieces().get(targetID);
+            targetPiece.kill();
+            System.out.println("SMARTER AI CAPTURE!!*********************\n\n"); // <-- debugging AI (evaluateBoard)
+            System.out.printf("%s caputered %s at %d,%d\n", bestPiece.getType(), targetPiece.getType(), bestRow, bestCol);
         }
+        // no special handling for captures.. yet
+        bestPiece.movePiece(bestRow, bestCol);
+        System.out.printf("AI moved %s to %d,%d\n", bestPiece.getType(), bestRow, bestCol);
     }
 
     public int calculateBoardScore(ArrayList<ArrayList<String>> board) {
@@ -167,6 +196,6 @@ public class CPU extends aPlayer {
     @Override
     public void update(Observable o, Object arg) {
         this.currentBoardState = ( ArrayList<ArrayList<String>> ) arg;
-        System.out.println("AI Looking at new board State");  // <-- debugging AI
+        //System.out.println("AI Looking at new board State");  // <-- debugging AI
     }
 }

@@ -80,11 +80,11 @@ public class BoardWindow extends aWindow implements Observer {
                 myGUI.setView("main");
                 break;
             case "Confirm":
-                System.out.println("Taking Turn...");
+                //System.out.println("Taking Turn...");
                 myGUI.confirmMove();
                 break;
             default:
-                System.out.println(buttonType);
+                //System.out.println(buttonType);
                 myGUI.setSelected(buttonType);
                 break;
         }

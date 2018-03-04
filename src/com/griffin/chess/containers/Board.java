@@ -143,15 +143,15 @@ public class Board extends Observable {
         // check for an available move/capture
         String moveCheck = cellState.substring(cellState.length()-1);
         if (moveCheck.equals("x")) {
-            System.out.println("capture click!"); // <- capture debug
+            //System.out.println("capture click!"); // <- capture debug
             targetCell.add(row);
             targetCell.add(col);
         } else if (moveCheck.equals(".")) {
-            System.out.println("valid target click!"); // <- capture debug
+            //System.out.println("valid target click!"); // <- capture debug
             targetCell.add(row);
             targetCell.add(col);
         } else {
-            System.out.println(moveCheck + " click!"); // <- capture debug
+            //System.out.println(moveCheck + " click!"); // <- capture debug
             // new piece selection
             selectedCell.clear();
 
@@ -165,7 +165,7 @@ public class Board extends Observable {
                     selectedCell.add(row);
                     selectedCell.add(col);
                     setDestinations(pieceID);
-                    System.out.printf("Clicked Piece %s\n", pieceID);
+                    //System.out.printf("Clicked Piece %s\n", pieceID);
                 }
             }
         }
@@ -213,7 +213,6 @@ public class Board extends Observable {
                 // call the pieces move method
                 players.get(activePlayer).getPieces().get(pieceID).movePiece(targetRow, targetCol);
             }
-            updateDisplay();
         } else if (players.get(activePlayer).getType().equals("robot")) {
             System.out.println("AI TAKING TURN");   // <-- debugging AI
         }
@@ -225,7 +224,7 @@ public class Board extends Observable {
         selectedCell.clear();
         destinations.clear();
         targetCell.clear();
-        //updateDisplay();
+        updateDisplay();
         // let the CPU know to go
         if (players.get(activePlayer).getType().equals("robot"))
             notifyAI(players.get(activePlayer));
@@ -236,10 +235,4 @@ public class Board extends Observable {
         aiPlayer.takeAITurn();
         confirmMove();
     }
-
-    public void setBoardState(ArrayList<ArrayList<String>> newBoard) {
-        boardState = newBoard;
-        // this isn't a good way of updating it...
-    }
-
 }
