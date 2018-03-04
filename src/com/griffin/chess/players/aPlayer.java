@@ -24,7 +24,7 @@ public abstract class aPlayer implements Player {
     public ArrayList<Piece> getPiecesWithMoves() {
         ArrayList<Piece> pieceList = new ArrayList<>();
         for (Piece piece : pieces) {
-            if (!piece.getAvailableMoves().isEmpty())
+            if (!piece.getAvailableMoves().isEmpty() && piece.isAlive())
                 pieceList.add(piece);
         }
         return pieceList;

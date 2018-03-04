@@ -144,7 +144,7 @@ public class CPU extends aPlayer {
             targetPiece = opponent.getPieces().get(targetID);
             targetPiece.kill();
             System.out.println("SMARTER AI CAPTURE!!*********************\n\n"); // <-- debugging AI (evaluateBoard)
-            System.out.printf("%s caputered %s at %d,%d\n", bestPiece.getType(), targetPiece.getType(), bestRow, bestCol);
+            System.out.printf("%s captured %s at %d,%d\n", bestPiece.getType(), targetPiece.getType(), bestRow, bestCol);
         }
         // no special handling for captures.. yet
         bestPiece.movePiece(bestRow, bestCol);
