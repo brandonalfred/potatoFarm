@@ -54,96 +54,16 @@ public class Cell extends JButton {
         setCellColor(theme, cellState);
 
         if(cellState.substring(0,1).equals("-")) {
-            // eventually text here will get replaced with an image
-            //setText("");
             setIcon(null);
         } else {
-            //setText(cellState.substring(1,2));
-            //setForeground(WHITE);
-            if(theme.equals("night")) {
-                if(cellState != "-") {
-                    // print pictures
-                    switch ((cellState.substring(0,2))) {
-                        case "1♙":
-                            setIcon(new ImageIcon("img/chess-pieces/white-pawn.png"));
-                            break;
-                        case "1♗":
-                            setIcon(new ImageIcon("img/chess-pieces/white-bishop.png"));
-                            break;
-                        case "1♔":
-                            setIcon(new ImageIcon("img/chess-pieces/white-king.png"));
-                            break;
-                        case "1♘":
-                            setIcon(new ImageIcon("img/chess-pieces/white-knight.png"));
-                            break;
-                        case "1♕":
-                            setIcon(new ImageIcon("img/chess-pieces/white-queen.png"));
-                            break;
-                        case "1♖":
-                            setIcon(new ImageIcon("img/chess-pieces/white-rook.png"));
-                            break;
-                        case "0♙":
-                            setIcon(new ImageIcon("img/chess-pieces/red-pawn.png"));
-                            break;
-                        case "0♗":
-                            setIcon(new ImageIcon("img/chess-pieces/red-bishop.png"));
-                            break;
-                        case "0♔":
-                            setIcon(new ImageIcon("img/chess-pieces/red-king.png"));
-                            break;
-                        case "0♘":
-                            setIcon(new ImageIcon("img/chess-pieces/red-knight.png"));
-                            break;
-                        case "0♕":
-                            setIcon(new ImageIcon("img/chess-pieces/red-queen.png"));
-                            break;
-                        case "0♖":
-                            setIcon(new ImageIcon("img/chess-pieces/red-rook.png"));
-                            break;
-                    }
+            if(isNight(theme)) {
+                if(!isEmpty(cellState)) {
+                    showWhiteAndRed(cellState.substring(0,2));
                 }
             }
             else {
-                if(cellState != "-") {
-                    // print pictures
-                    switch ((cellState.substring(0,2))) {
-                        case "1♙":
-                            setIcon(new ImageIcon("img/chess-pieces/white-pawn.png"));
-                            break;
-                        case "1♗":
-                            setIcon(new ImageIcon("img/chess-pieces/white-bishop.png"));
-                            break;
-                        case "1♔":
-                            setIcon(new ImageIcon("img/chess-pieces/white-king.png"));
-                            break;
-                        case "1♘":
-                            setIcon(new ImageIcon("img/chess-pieces/white-knight.png"));
-                            break;
-                        case "1♕":
-                            setIcon(new ImageIcon("img/chess-pieces/white-queen.png"));
-                            break;
-                        case "1♖":
-                            setIcon(new ImageIcon("img/chess-pieces/white-rook.png"));
-                            break;
-                        case "0♙":
-                            setIcon(new ImageIcon("img/chess-pieces/black-pawn.png"));
-                            break;
-                        case "0♗":
-                            setIcon(new ImageIcon("img/chess-pieces/black-bishop.png"));
-                            break;
-                        case "0♔":
-                            setIcon(new ImageIcon("img/chess-pieces/black-king.png"));
-                            break;
-                        case "0♘":
-                            setIcon(new ImageIcon("img/chess-pieces/black-knight.png"));
-                            break;
-                        case "0♕":
-                            setIcon(new ImageIcon("img/chess-pieces/black-queen.png"));
-                            break;
-                        case "0♖":
-                            setIcon(new ImageIcon("img/chess-pieces/black-rook.png"));
-                            break;
-                    }
+                if(!isEmpty(cellState)) {
+                    showBlackAndWhite(cellState.substring(0,2));
                 }
             }
         }
@@ -153,6 +73,97 @@ public class Cell extends JButton {
         this.row = row;
         this.col = col;
         setActionCommand(Integer.toString(row) + Integer.toString(col));
+    }
+
+    public void showWhiteAndRed(String piece) {
+        // print pictures
+        switch (piece) {
+            case "1♙":
+                setIcon(new ImageIcon("img/chess-pieces/white-pawn.png"));
+                break;
+            case "1♗":
+                setIcon(new ImageIcon("img/chess-pieces/white-bishop.png"));
+                break;
+            case "1♔":
+                setIcon(new ImageIcon("img/chess-pieces/white-king.png"));
+                break;
+            case "1♘":
+                setIcon(new ImageIcon("img/chess-pieces/white-knight.png"));
+                break;
+            case "1♕":
+                setIcon(new ImageIcon("img/chess-pieces/white-queen.png"));
+                break;
+            case "1♖":
+                setIcon(new ImageIcon("img/chess-pieces/white-rook.png"));
+                break;
+            case "0♙":
+                setIcon(new ImageIcon("img/chess-pieces/red-pawn.png"));
+                break;
+            case "0♗":
+                setIcon(new ImageIcon("img/chess-pieces/red-bishop.png"));
+                break;
+            case "0♔":
+                setIcon(new ImageIcon("img/chess-pieces/red-king.png"));
+                break;
+            case "0♘":
+                setIcon(new ImageIcon("img/chess-pieces/red-knight.png"));
+                break;
+            case "0♕":
+                setIcon(new ImageIcon("img/chess-pieces/red-queen.png"));
+                break;
+            case "0♖":
+                setIcon(new ImageIcon("img/chess-pieces/red-rook.png"));
+                break;
+        }
+    }
+
+    public void showBlackAndWhite(String piece) {
+        switch (piece) {
+            case "1♙":
+                setIcon(new ImageIcon("img/chess-pieces/white-pawn.png"));
+                break;
+            case "1♗":
+                setIcon(new ImageIcon("img/chess-pieces/white-bishop.png"));
+                break;
+            case "1♔":
+                setIcon(new ImageIcon("img/chess-pieces/white-king.png"));
+                break;
+            case "1♘":
+                setIcon(new ImageIcon("img/chess-pieces/white-knight.png"));
+                break;
+            case "1♕":
+                setIcon(new ImageIcon("img/chess-pieces/white-queen.png"));
+                break;
+            case "1♖":
+                setIcon(new ImageIcon("img/chess-pieces/white-rook.png"));
+                break;
+            case "0♙":
+                setIcon(new ImageIcon("img/chess-pieces/black-pawn.png"));
+                break;
+            case "0♗":
+                setIcon(new ImageIcon("img/chess-pieces/black-bishop.png"));
+                break;
+            case "0♔":
+                setIcon(new ImageIcon("img/chess-pieces/black-king.png"));
+                break;
+            case "0♘":
+                setIcon(new ImageIcon("img/chess-pieces/black-knight.png"));
+                break;
+            case "0♕":
+                setIcon(new ImageIcon("img/chess-pieces/black-queen.png"));
+                break;
+            case "0♖":
+                setIcon(new ImageIcon("img/chess-pieces/black-rook.png"));
+                break;
+        }
+    }
+
+    public boolean isNight(String theme) {
+        return theme.equals("night");
+    }
+
+    public boolean isEmpty(String cellState) {
+        return cellState == "-";
     }
 }
 
