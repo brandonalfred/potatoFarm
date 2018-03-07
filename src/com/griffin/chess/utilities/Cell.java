@@ -83,22 +83,22 @@ public class Cell extends JButton {
                             setIcon(new ImageIcon("img/chess-pieces/white-rook.png"));
                             break;
                         case "0♙":
-                            //setIcon(new ImageIcon("img/chess-pieces/red-pawn.png"));
+                            setIcon(new ImageIcon("img/chess-pieces/red-pawn.png"));
                             break;
                         case "0♗":
-                            //setIcon(new ImageIcon("img/chess-pieces/red-bishop.png"));
+                            setIcon(new ImageIcon("img/chess-pieces/red-bishop.png"));
                             break;
                         case "0♔":
-                            //setIcon(new ImageIcon("img/chess-pieces/red-king.png"));
+                            setIcon(new ImageIcon("img/chess-pieces/red-king.png"));
                             break;
                         case "0♘":
-                            //setIcon(new ImageIcon("img/chess-pieces/red-knight.png"));
+                            setIcon(new ImageIcon("img/chess-pieces/red-knight.png"));
                             break;
                         case "0♕":
-                            //setIcon(new ImageIcon("img/chess-pieces/red-queen.png"));
+                            setIcon(new ImageIcon("img/chess-pieces/red-queen.png"));
                             break;
                         case "0♖":
-                            //setIcon(new ImageIcon("img/chess-pieces/red-rook.png"));
+                            setIcon(new ImageIcon("img/chess-pieces/red-rook.png"));
                             break;
                     }
                 }
