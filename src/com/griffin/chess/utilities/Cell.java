@@ -26,8 +26,6 @@ public class Cell extends JButton {
         row = 0;
         col = 0;
         battleColor = PINK;
-        //darkColor = BLACK;
-        //lightColor = RED;
         darkColor = new Color(139, 69, 19);
         lightColor = new Color(238, 232, 170);
         selectedColor = GREEN;
@@ -36,7 +34,7 @@ public class Cell extends JButton {
     }
 
     private void setCellColor(String theme, String cellState) {
-        if (theme.equals("night")) {
+        if (isNight(theme)) {
             lightColor = GRAY;
             darkColor = BLACK;
         }
